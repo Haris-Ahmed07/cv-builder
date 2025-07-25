@@ -2,7 +2,7 @@ import React from 'react'
 import useCVStore from '../store/cvStore'
 
 const CVPreview = () => {
-  const { personalInfo, education } = useCVStore()
+  const { personalInfo, education, workExperience } = useCVStore()
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -54,11 +54,22 @@ const CVPreview = () => {
           </>
         )}
 
-        <hr className="my-4" style={{ borderTop: '1px solid #d1d5db' }} />
-
-        <div className="text-center italic" style={{ color: '#6b7280' }}>
-          Your CV preview will expand as you fill in other sections like Work, Skills, and Achievements
-        </div>
+        {workExperience?.length > 0 && (
+          <>
+            <h2 className="text-xl font-semibold mb-2 border-b pb-1" style={{ color: '#1f2937' }}>Work Experience</h2>
+            <div className="mb-4">
+              {workExperience.map((work, index) => (
+                <div key={index} className="mb-3">
+                  <p className="font-semibold">{work.title} — {work.company}</p>
+                  <p className="text-sm text-gray-600">{work.startDate} – {work.endDate}</p>
+                  {work.description && (
+                    <p className="text-sm text-gray-700 mt-1">{work.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

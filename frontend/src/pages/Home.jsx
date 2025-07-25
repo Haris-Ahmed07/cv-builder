@@ -3,6 +3,7 @@ import PersonalInfo from '../components/FormSections/PersonalInfo'
 import CVPreview from '../components/CVPreview'
 import DownloadButton from '../components/DownloadButton'
 import EducationForm from '../components/FormSections/Education'
+import WorkExperience from '../components/FormSections/WorkExperience'
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
         <h2 className="text-xl font-bold">CV Form</h2>
         <PersonalInfo />
         <EducationForm />
+        <WorkExperience />
         {/* Add more components like Summary, Education here later */}
       </div>
       <div className="w-full md:w-1/2 space-y-4 bg-white p-4 rounded shadow-md">

@@ -10,6 +10,7 @@ const useCVStore = create((set) => ({
     github: '',
   },
   education: [],
+  workExperience: [],
   updatePersonalInfo: (newInfo) =>
     set((state) => ({
       personalInfo: {
@@ -29,6 +30,16 @@ const useCVStore = create((set) => ({
     set((state) => ({
       education: state.education.filter((_, i) => i !== indexToRemove),
     })),
+  addWorkExperience: (newWork) =>
+    set((state) => ({
+      workExperience: [...state.workExperience, newWork],
+    })),
+
+  removeWorkExperience: (index) =>
+    set((state) => ({
+      workExperience: state.workExperience.filter((_, i) => i !== index),
+    })),
+
 }))
 
 export default useCVStore
