@@ -8,8 +8,6 @@ const Summary = () => {
 
   return (
     <div className="bg-white p-6 rounded shadow-md mb-6">
-      {/* Section title */}
-      <h2 className="text-xl font-semibold mb-4">Professional Summary</h2>
       {/* Textarea for user to input their summary */}
       <textarea
         value={summary}

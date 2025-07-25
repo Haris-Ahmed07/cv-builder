@@ -14,8 +14,6 @@ const Languages = () => {
 
   return (
     <div className="bg-white p-6 rounded shadow-md mb-6">
-      <h2 className="text-xl font-semibold mb-4">Languages</h2>
-
       {/* Input form */}
       <form onSubmit={handleSubmit} className="flex gap-3">
         <input

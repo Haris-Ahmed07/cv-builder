@@ -18,8 +18,6 @@ const Skills = () => {
 
   return (
     <div className="bg-white p-6 rounded shadow-md mb-6">
-      <h2 className="text-xl font-semibold mb-4">Skills</h2>
-
       {/* Input form for adding skills */}
       <form onSubmit={handleAdd} className="flex gap-4">
         <input

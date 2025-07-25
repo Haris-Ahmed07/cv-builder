@@ -43,8 +43,6 @@ const EducationForm = () => {
 
   return (
     <div className="bg-white p-6 rounded shadow mb-6">
-      <h2 className="text-xl font-bold mb-4">Education</h2>
-
       {/* Education input form */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input

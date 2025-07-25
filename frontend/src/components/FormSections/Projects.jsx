@@ -28,8 +28,6 @@ const Projects = () => {
 
   return (
     <div className="bg-white p-6 rounded shadow-md mb-6">
-      <h2 className="text-xl font-semibold mb-4">Projects</h2>
-
       {/* Project input form */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
