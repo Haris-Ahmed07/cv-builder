@@ -2,8 +2,10 @@ import React from 'react'
 import useCVStore from '../../store/cvStore'
 
 const PersonalInfo = () => {
+  // Get personalInfo state and updater function from Zustand store
   const { personalInfo, updatePersonalInfo } = useCVStore()
 
+  // Handle input field changes and update store
   const handleChange = (e) => {
     const { name, value } = e.target
     updatePersonalInfo({ [name]: value })
@@ -12,6 +14,8 @@ const PersonalInfo = () => {
   return (
     <div className="bg-white p-4 rounded shadow">
       <h3 className="text-lg font-semibold mb-2">Personal Information</h3>
+
+      {/* Input fields for personal information */}
       <div className="grid grid-cols-1 gap-4">
         <input
           type="text"
@@ -19,7 +23,7 @@ const PersonalInfo = () => {
           value={personalInfo.name}
           onChange={handleChange}
           placeholder="Full Name"
-          className="border p-2 rounded"
+          className="border border-gray-300 p-2 rounded"
         />
         <input
           type="email"
@@ -27,7 +31,7 @@ const PersonalInfo = () => {
           value={personalInfo.email}
           onChange={handleChange}
           placeholder="Email"
-          className="border p-2 rounded"
+          className="border border-gray-300 p-2 rounded"
         />
         <input
           type="tel"
@@ -35,7 +39,7 @@ const PersonalInfo = () => {
           value={personalInfo.phone}
           onChange={handleChange}
           placeholder="Phone Number"
-          className="border p-2 rounded"
+          className="border border-gray-300 p-2 rounded"
         />
         <input
           type="text"
@@ -43,7 +47,7 @@ const PersonalInfo = () => {
           value={personalInfo.address}
           onChange={handleChange}
           placeholder="Address"
-          className="border p-2 rounded"
+          className="border border-gray-300 p-2 rounded"
         />
         <input
           type="text"
@@ -51,7 +55,7 @@ const PersonalInfo = () => {
           value={personalInfo.linkedin}
           onChange={handleChange}
           placeholder="LinkedIn"
-          className="border p-2 rounded"
+          className="border border-gray-300 p-2 rounded"
         />
         <input
           type="text"
@@ -59,7 +63,7 @@ const PersonalInfo = () => {
           value={personalInfo.github}
           onChange={handleChange}
           placeholder="GitHub"
-          className="border p-2 rounded"
+          className="border border-gray-300 p-2 rounded"
         />
       </div>
     </div>
