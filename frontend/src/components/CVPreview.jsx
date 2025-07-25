@@ -1,9 +1,7 @@
 import React from 'react'
 import useCVStore from '../store/cvStore'
 
-// Main CV preview component that renders all sections
 const CVPreview = () => {
-  // Grab all CV data and section order from the store
   const {
     sectionOrder,
     personalInfo,
@@ -17,181 +15,158 @@ const CVPreview = () => {
     languages
   } = useCVStore()
 
-  // Map section names to their render functions for dynamic rendering
   const sectionRenderMap = {
-    PersonalInfo: () =>
-      <div className="text-center mb-6">
-        {/* Render name if available */}
+    PersonalInfo: () => (
+      <div className="mb-2 text-center">
         {personalInfo.name && (
-          <h1 className="text-3xl font-bold text-gray-900">{personalInfo.name}</h1>
+          <h1 className="text-xl font-bold tracking-wider uppercase text-black">
+            {personalInfo.name}
+          </h1>
         )}
-        {/* Render email and phone if present */}
-        {(personalInfo.email || personalInfo.phone) && (
-          <p className="text-sm text-gray-600">
-            {personalInfo.email}{personalInfo.email && personalInfo.phone ? ' | ' : ''}{personalInfo.phone}
-          </p>
-        )}
-        {/* Render address if present */}
-        {personalInfo.address && <p className="text-sm text-gray-600">{personalInfo.address}</p>}
-        {/* Render LinkedIn and GitHub if present */}
-        {personalInfo.linkedin && (
-          <p className="text-sm text-gray-600">
-            <span className="font-medium">LinkedIn:</span> {personalInfo.linkedin}
-          </p>
-        )}
-        {personalInfo.github && (
-          <p className="text-sm text-gray-600">
-            <span className="font-medium">GitHub:</span> {personalInfo.github}
-          </p>
-        )}
-      </div>,
+        <p className="text-[11px] text-black mt-[2px]">
+          {[personalInfo.email, personalInfo.phone].filter(Boolean).join(' | ')}
+        </p>
+        <p className="text-[11px] text-black">
+          {[personalInfo.address, personalInfo.linkedin, personalInfo.github].filter(Boolean).join(' | ')}
+        </p>
+      </div>
+    ),
 
     Summary: () =>
       summary && (
-        <>
-          <h2 className="text-xl font-semibold mb-2 border-b pb-1 text-gray-800">Summary</h2>
-          <p className="text-sm text-gray-700 mb-4">{summary}</p>
-        </>
+        <div className="mb-2 text-start">
+          <h2 className="text-[11px] font-bold uppercase tracking-wide text-black border-b border-black pb-[2px] mb-[2px]">
+            Professional Summary
+          </h2>
+          <p className="text-[11px] text-justify">{summary}</p>
+        </div>
       ),
 
     Education: () =>
       education.length > 0 && (
-        <>
-          <h2 className="text-xl font-semibold mb-2 border-b pb-1 text-gray-800">Education</h2>
-          <div className="mb-4">
-            {/* Render each education entry */}
-            {education.map((edu, index) => (
-              <div key={index} className="mb-3">
-                <p className="font-semibold">{edu.school} — {edu.degree}</p>
-                <p className="text-sm text-gray-600">{edu.field}</p>
-                <p className="text-sm text-gray-600">
-                  {edu.startDate} – {edu.endDate}
-                  {edu.grade && ` | GPA: ${edu.grade}`}
-                </p>
-                {/* Optional description */}
-                {edu.description && (
-                  <p className="text-sm text-gray-700 mt-1">{edu.description}</p>
-                )}
+        <div className="mb-2 text-start">
+          <h2 className="text-[11px] font-bold uppercase tracking-wide text-black border-b border-black pb-[2px] mb-[2px]">
+            Education
+          </h2>
+          {education.map((edu, index) => (
+            <div key={index} className="mb-1">
+              <div className="flex justify-between text-[11px]">
+                <p className="font-semibold">{edu.degree}</p>
+                <span>{edu.startDate} – {edu.endDate}</span>
               </div>
-            ))}
-          </div>
-        </>
+              <p className="text-[11px]">{edu.school}</p>
+              {edu.field && <p className="text-[11px]">{edu.field}</p>}
+              {edu.grade && <p className="text-[11px]">GPA: {edu.grade}</p>}
+              {edu.description && <p className="text-[11px]">{edu.description}</p>}
+            </div>
+          ))}
+        </div>
       ),
 
     Work: () =>
       workExperience.length > 0 && (
-        <>
-          <h2 className="text-xl font-semibold mb-2 border-b pb-1 text-gray-800">Work Experience</h2>
-          <div className="mb-4">
-            {/* Render each work experience */}
-            {workExperience.map((work, index) => (
-              <div key={index} className="mb-3">
-                <p className="font-semibold">{work.title} — {work.company}</p>
-                <p className="text-sm text-gray-600">{work.startDate} – {work.endDate}</p>
-                {/* Optional description */}
-                {work.description && (
-                  <p className="text-sm text-gray-700 mt-1">{work.description}</p>
-                )}
+        <div className="mb-2 text-start">
+          <h2 className="text-[11px] font-bold uppercase tracking-wide text-black border-b border-black pb-[2px] mb-[2px]">
+            Work Experience
+          </h2>
+          {workExperience.map((work, index) => (
+            <div key={index} className="mb-1">
+              <div className="flex justify-between text-[11px]">
+                <p className="font-semibold">{work.title}</p>
+                <span>{work.startDate} – {work.endDate}</span>
               </div>
-            ))}
-          </div>
-        </>
+              <p className="text-[11px]">{work.company}</p>
+              {work.description && <p className="text-[11px]">{work.description}</p>}
+            </div>
+          ))}
+        </div>
       ),
 
     Skills: () =>
       skills.length > 0 && (
-        <>
-          <h2 className="text-xl font-semibold mb-2 border-b pb-1 text-gray-800">Skills</h2>
-          {/* Render skills as badges */}
-          <ul className="mb-4 flex flex-wrap gap-2">
-            {skills.map((skill, idx) => (
-              <li key={idx} className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-800">
-                {skill}
-              </li>
-            ))}
-          </ul>
-        </>
+        <div className="mb-2 text-start ">
+          <h2 className="text-[11px] font-bold uppercase tracking-wide text-black border-b border-black pb-[2px] mb-[2px]">
+            Skills
+          </h2>
+          <p className="text-[11px]">{skills.join(' | ')}</p>
+        </div>
       ),
 
     Achievements: () =>
       achievements.length > 0 && (
-        <>
-          <h2 className="text-xl font-semibold mb-2 border-b pb-1 text-gray-800">Achievements</h2>
-          {/* List achievements */}
-          <ul className="list-disc list-inside text-sm text-gray-700 mb-4">
+        <div className="mb-2 text-start">
+          <h2 className="text-[11px] font-bold uppercase tracking-wide text-black border-b border-black pb-[2px] mb-[2px]">
+            Achievements
+          </h2>
+          <ul className="list-disc pl-4 text-[11px] space-y-[2px]">
             {achievements.map((ach, idx) => (
               <li key={idx}>{ach}</li>
             ))}
           </ul>
-        </>
+        </div>
       ),
 
     Projects: () =>
       projects.length > 0 && (
-        <>
-          <h2 className="text-xl font-semibold mb-2 border-b pb-1 text-gray-800">Projects</h2>
-          <div className="mb-4">
-            {/* Render each project */}
-            {projects.map((proj, idx) => (
-              <div key={idx} className="mb-3">
-                <p className="font-semibold">{proj.title}</p>
-                <p className="text-sm text-gray-600 italic">{proj.techStack}</p>
-                <p className="text-sm text-gray-700">{proj.description}</p>
-                {/* Optional project link */}
-                {proj.link && (
-                  <a href={proj.link} target="_blank" rel="noreferrer" className="text-sm text-blue-600">
-                    {proj.link}
-                  </a>
-                )}
-              </div>
-            ))}
-          </div>
-        </>
+        <div className="mb-2 text-start">
+          <h2 className="text-[11px] font-bold uppercase tracking-wide text-black border-b border-black pb-[2px] mb-[2px]">
+            Projects
+          </h2>
+          {projects.map((proj, idx) => (
+            <div key={idx} className="mb-1">
+              <p className="text-[11px] font-semibold">{proj.title}</p>
+              {proj.techStack && (
+                <p className="text-[11px] italic">{proj.techStack}</p>
+              )}
+              <p className="text-[11px]">{proj.description}</p>
+              {proj.link && (
+                <p className="text-[11px] text-blue-700">{proj.link}</p>
+              )}
+            </div>
+          ))}
+        </div>
       ),
 
     Certifications: () =>
       certifications.length > 0 && (
-        <>
-          <h2 className="text-xl font-semibold mb-2 border-b pb-1 text-gray-800">Certifications</h2>
-          <div className="mb-4">
-            {/* Render each certification */}
-            {certifications.map((cert, idx) => (
-              <div key={idx} className="mb-2">
+        <div className="mb-2 text-start">
+          <h2 className="text-[11px] font-bold uppercase tracking-wide text-black border-b border-black pb-[2px] mb-[2px]">
+            Certifications
+          </h2>
+          {certifications.map((cert, idx) => (
+            <div key={idx} className="mb-1 text-[11px]">
+              <div className="flex justify-between">
                 <p className="font-semibold">{cert.name}</p>
-                <p className="text-sm text-gray-600">
-                  {cert.issuer} {cert.date && `— ${cert.date}`}
-                </p>
+                {cert.date && <span>{cert.date}</span>}
               </div>
-            ))}
-          </div>
-        </>
+              <p>{cert.issuer}</p>
+            </div>
+          ))}
+        </div>
       ),
 
     Languages: () =>
       languages.length > 0 && (
-        <>
-          <h2 className="text-xl font-semibold mb-2 border-b pb-1 text-gray-800">Languages</h2>
-          {/* Render languages as badges */}
-          <ul className="mb-4 flex flex-wrap gap-2">
-            {languages.map((lang, idx) => (
-              <li key={idx} className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-800">
-                {lang}
-              </li>
-            ))}
-          </ul>
-        </>
-      )
+        <div className="mb-2 text-start">
+          <h2 className="text-[11px] font-bold uppercase tracking-wide text-black border-b border-black pb-[2px] mb-[2px]">
+            Languages
+          </h2>
+          <p className="text-[11px]">{languages.join(' | ')}</p>
+        </div>
+      ),
   }
 
-  // Main render of the CV preview
   return (
-    <div className="w-full">
+    <div className="w-full flex justify-center py-6 bg-white">
       <div
         id="cv-preview"
-        className="border rounded p-6 shadow-md w-full"
-        style={{ backgroundColor: '#ffffff', color: '#000000', borderColor: '#d1d5db' }}
+        className="bg-white w-[794px] min-h-[1123px] px-[40px] py-[30px] border border-black"
+        style={{
+          fontFamily: 'Times New Roman, serif',
+          fontSize: '11px',
+          lineHeight: '1.4',
+        }}
       >
-        {/* Render sections in the specified order */}
         {sectionOrder.map(id => (
           <React.Fragment key={id}>
             {sectionRenderMap[id]?.()}
