@@ -1,29 +1,27 @@
 import React, { useState } from 'react'
 import useCVStore from '../../store/cvStore'
 
+// Achievements section component
 const Achievements = () => {
-  // Access achievements state and update functions from Zustand store
+  // Get achievements and actions from store
   const { achievements, addAchievement, removeAchievement } = useCVStore()
 
-  // Local state to manage input field value
+  // Local state for input field
   const [input, setInput] = useState('')
 
-  // Handle form submission
+  // Handle adding new achievement
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Prevent adding empty or whitespace-only achievements
-    if (!input.trim()) return
-    // Add achievement to global store
+    if (!input.trim()) return // Ignore empty input
     addAchievement(input.trim())
-    // Reset input field
-    setInput('')
+    setInput('') // Clear input
   }
 
   return (
     <div className="bg-white p-6 rounded shadow-md mb-6">
       <h2 className="text-xl font-semibold mb-4">Achievements</h2>
 
-      {/* Input form to add a new achievement */}
+      {/* Form to add achievement */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           type="text"
@@ -41,14 +39,14 @@ const Achievements = () => {
         </button>
       </form>
 
-      {/* List of added achievements */}
+      {/* Show list of achievements */}
       <div className="mt-4">
         {achievements.map((ach, idx) => (
           <div
             key={idx}
             className="border p-3 mt-2 rounded relative"
           >
-            {/* Remove button for individual achievement */}
+            {/* Button to remove achievement */}
             <button
               onClick={() => removeAchievement(idx)}
               className="absolute top-1 right-2 text-red-500 text-sm"

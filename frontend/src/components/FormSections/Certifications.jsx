@@ -2,22 +2,22 @@ import React, { useState } from 'react'
 import useCVStore from '../../store/cvStore'
 
 const Certifications = () => {
-  // Get certification list and update functions from store
+  // get certifications and actions from store
   const { certifications, addCertification, removeCertification } = useCVStore()
 
-  // Local form state
+  // form state for new certification
   const [form, setForm] = useState({
     name: '',
     issuer: '',
     date: '',
   })
 
-  // Handle input change for form fields
+  // handle input changes
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  // Submit handler to add new certification
+  // add new certification
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!form.name) return
@@ -29,7 +29,7 @@ const Certifications = () => {
     <div className="bg-white p-6 rounded shadow-md mb-6">
       <h2 className="text-xl font-semibold mb-4">Certifications</h2>
 
-      {/* Form to add new certification */}
+      {/* add certification form */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           type="text"
@@ -59,11 +59,11 @@ const Certifications = () => {
         </button>
       </form>
 
-      {/* Display list of added certifications */}
+      {/* list certifications */}
       <div className="mt-4">
         {certifications.map((cert, idx) => (
           <div key={idx} className="border p-3 mt-2 rounded relative">
-            {/* Remove button on top right */}
+            {/* remove button */}
             <button
               onClick={() => removeCertification(idx)}
               className="absolute top-1 right-2 text-red-500 text-sm"
