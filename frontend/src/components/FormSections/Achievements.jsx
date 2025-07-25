@@ -1,0 +1,49 @@
+import React, { useState } from 'react'
+import useCVStore from '../../store/cvStore'
+
+const Achievements = () => {
+  const { achievements, addAchievement, removeAchievement } = useCVStore()
+  const [input, setInput] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!input.trim()) return
+    addAchievement(input.trim())
+    setInput('')
+  }
+
+  return (
+    <div className="bg-white p-6 rounded shadow-md mb-6">
+      <h2 className="text-xl font-semibold mb-4">Achievements</h2>
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input
+          type="text"
+          name="achievement"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Add an achievement"
+          className="border p-2 rounded col-span-2"
+        />
+        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded col-span-2">
+          Add Achievement
+        </button>
+      </form>
+
+      <div className="mt-4">
+        {achievements.map((ach, idx) => (
+          <div key={idx} className="border p-3 mt-2 rounded relative">
+            <button
+              onClick={() => removeAchievement(idx)}
+              className="absolute top-1 right-2 text-red-500 text-sm"
+            >
+              Remove
+            </button>
+            <p className="text-sm">{ach}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export default Achievements

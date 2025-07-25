@@ -12,6 +12,8 @@ const useCVStore = create((set) => ({
   education: [],
   workExperience: [],
   skills: [],
+  achievements: [],
+
   updatePersonalInfo: (newInfo) =>
     set((state) => ({
       personalInfo: {
@@ -19,6 +21,7 @@ const useCVStore = create((set) => ({
         ...newInfo,
       },
     })),
+
   updateEducation: (newEducation) =>
     set(() => ({
       education: newEducation,
@@ -31,24 +34,33 @@ const useCVStore = create((set) => ({
     set((state) => ({
       education: state.education.filter((_, i) => i !== indexToRemove),
     })),
+
   addWorkExperience: (newWork) =>
     set((state) => ({
       workExperience: [...state.workExperience, newWork],
     })),
-
   removeWorkExperience: (index) =>
     set((state) => ({
       workExperience: state.workExperience.filter((_, i) => i !== index),
     })),
+
   addSkill: (skill) =>
     set((state) => ({
-      skills: [...state.skills, skill]
+      skills: [...state.skills, skill],
     })),
   removeSkill: (index) =>
     set((state) => ({
-      skills: state.skills.filter((_, i) => i !== index)
+      skills: state.skills.filter((_, i) => i !== index),
     })),
 
+  addAchievement: (achievement) =>
+    set((state) => ({
+      achievements: [...state.achievements, achievement],
+    })),
+  removeAchievement: (index) =>
+    set((state) => ({
+      achievements: state.achievements.filter((_, i) => i !== index),
+    })),
 }))
 
 export default useCVStore
