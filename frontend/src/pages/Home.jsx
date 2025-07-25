@@ -4,6 +4,7 @@ import CVPreview from '../components/CVPreview'
 import DownloadButton from '../components/DownloadButton'
 import EducationForm from '../components/FormSections/Education'
 import WorkExperience from '../components/FormSections/WorkExperience'
+import Skills from '../components/FormSections/Skills'
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
         <PersonalInfo />
         <EducationForm />
         <WorkExperience />
+        <Skills />
         {/* Add more components like Summary, Education here later */}
       </div>
       <div className="w-full md:w-1/2 space-y-4 bg-white p-4 rounded shadow-md">

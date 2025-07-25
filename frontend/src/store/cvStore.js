@@ -11,6 +11,7 @@ const useCVStore = create((set) => ({
   },
   education: [],
   workExperience: [],
+  skills: [],
   updatePersonalInfo: (newInfo) =>
     set((state) => ({
       personalInfo: {
@@ -38,6 +39,14 @@ const useCVStore = create((set) => ({
   removeWorkExperience: (index) =>
     set((state) => ({
       workExperience: state.workExperience.filter((_, i) => i !== index),
+    })),
+  addSkill: (skill) =>
+    set((state) => ({
+      skills: [...state.skills, skill]
+    })),
+  removeSkill: (index) =>
+    set((state) => ({
+      skills: state.skills.filter((_, i) => i !== index)
     })),
 
 }))

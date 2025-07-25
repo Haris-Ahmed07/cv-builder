@@ -2,7 +2,7 @@ import React from 'react'
 import useCVStore from '../store/cvStore'
 
 const CVPreview = () => {
-  const { personalInfo, education, workExperience } = useCVStore()
+  const { personalInfo, education, workExperience, skills } = useCVStore()
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -68,6 +68,19 @@ const CVPreview = () => {
                 </div>
               ))}
             </div>
+          </>
+        )}
+
+        {skills.length > 0 && (
+          <>
+            <h2 className="text-xl font-semibold mb-2 border-b pb-1" style={{ color: '#1f2937' }}>Skills</h2>
+            <ul className="mb-4 flex flex-wrap gap-2">
+              {skills.map((skill, idx) => (
+                <li key={idx} className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-800">
+                  {skill}
+                </li>
+              ))}
+            </ul>
           </>
         )}
       </div>
