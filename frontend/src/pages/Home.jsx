@@ -1,26 +1,29 @@
+
 import React from 'react'
-import PersonalInfo from '../components/FormSections/PersonalInfo'
+import BuilderLayout from '../components/Builder/BuilderLayout'
+import BuilderForm from '../components/Builder/BuilderForm'
 import CVPreview from '../components/CVPreview'
 import DownloadButton from '../components/DownloadButton'
-import EducationForm from '../components/FormSections/Education'
-import WorkExperience from '../components/FormSections/WorkExperience'
 
 const Home = () => {
   return (
-    <div className="flex flex-col md:flex-row gap-4 p-6 bg-gray-100 min-h-screen">
-      <div className="w-full md:w-1/2 space-y-4">
-        <h2 className="text-xl font-bold">CV Form</h2>
-        <PersonalInfo />
-        <EducationForm />
-        <WorkExperience />
-        {/* Add more components like Summary, Education here later */}
-      </div>
-      <div className="w-full md:w-1/2 space-y-4 bg-white p-4 rounded shadow-md">
-        <h2 className="text-xl font-bold">Preview</h2>
-        <CVPreview />
-        <DownloadButton />
-      </div>
-    </div>
+    <BuilderLayout
+      // Left side: Form for entering CV data
+      form={<BuilderForm />}
+      // Right side: Live preview section
+      preview={
+        <div className="w-full lg:w-1/2 flex flex-col gap-4">
+          {/* Preview container with scrollable content */}
+          <div className="bg-white rounded-2xl shadow-xl p-6 h-full overflow-y-auto max-h-[90vh]">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Live Preview</h2>
+            {/* Renders the CV preview component */}
+            <CVPreview />
+          </div>
+          {/* Download button for the CV */}
+          <DownloadButton />
+        </div>
+      }
+    />
   )
 }
 
