@@ -5,9 +5,10 @@
 @tailwind utilities;
 
 /* index.css or App.css */
-body, html, #root {
+html, body, #root {
   margin: 0;
   padding: 0;
-  width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
+  height: 100vh;
 }
+

@@ -10,21 +10,20 @@ const DownloadButton = () => {
     if (!cv) return
 
     try {
-      // Convert the CV to a canvas
+      // Convert the CV to a high-res canvas
       const canvas = await html2canvas(cv, {
         backgroundColor: '#ffffff',
         useCORS: true,
-        scale: 2
+        scale: 4 // Increase scale for higher quality
       })
-      // Get image data from canvas
       const imgData = canvas.toDataURL('image/png')
-      const pdf = new jsPDF('p', 'mm', 'a4')
-      const imgProps = pdf.getImageProperties(imgData)
-      const pdfWidth = pdf.internal.pageSize.getWidth()
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
+      const pdf = new jsPDF({
+        orientation: 'p',
+        unit: 'px',
+        format: [canvas.width, canvas.height] // Match canvas size
+      })
 
-      // Add image to PDF and save
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height)
       pdf.save('cv-preview.pdf')
     } catch (err) {
       console.error('Download error:', err)
