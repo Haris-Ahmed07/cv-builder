@@ -1,10 +1,24 @@
-import React from 'react'
-import BuilderLayout from '../components/Builder/BuilderLayout'
-import BuilderForm from '../components/Builder/BuilderForm'
-import CVPreview from '../components/CVPreview'
-import DownloadButton from '../components/DownloadButton'
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import BuilderLayout from '../components/Builder/BuilderLayout';
+import BuilderForm from '../components/Builder/BuilderForm';
+import CVPreview from '../components/CVPreview';
+import DownloadButton from '../components/DownloadButton';
 
 const Home = () => {
+  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/signin', { state: { from: '/home' } });
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (!isAuthenticated) {
+    return null; // or a loading spinner
+  }
   return (
     <BuilderLayout
       form={<BuilderForm />}
