@@ -1,75 +1,132 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
+import ErrorResponse from '../utils/errorResponse.js';
 
-// Use env var for JWT_SECRET
-const JWT_SECRET = process.env.JWT_SECRET || 'secret'
+// @desc    Register a new user
+// @route   POST /api/auth/signup
+// @access  Public
+export const signupUser = async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body;
 
-const users = [] // For now, using in-memory storage. Replace with DB later
-
-exports.signupUser = async (req, res) => {
-    const { email, password, name } = req.body
-
-    // Validate required fields
-    if (!name || !email || !password) {
-        return res.status(400).json({ message: 'Name, email, and password are required' })
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'User already exists with this email' 
+      });
     }
 
-    const existingUser = users.find(u => u.email === email)
-    if (existingUser) return res.status(400).json({ message: 'User already exists' })
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      password
+    });
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-    const user = { 
-        id: Date.now().toString(),
-        name,
-        email, 
-        password: hashedPassword 
-    }
-    users.push(user)
+    // Create token
+    const token = user.getSignedJwtToken();
 
-    // Create token with user data
-    const token = jwt.sign(
-        { 
-            id: user.id,
-            email: user.email,
-            name: user.name 
-        }, 
-        JWT_SECRET, 
-        { expiresIn: '1h' }
-    )
-    
-    // Return user data (excluding password) and token
-    const { password: _, ...userWithoutPassword } = user
-    res.status(201).json({ 
-        message: 'User created successfully', 
-        token,
-        user: userWithoutPassword
-    })
-}
-
-exports.signinUser = async (req, res) => {
-  const { email, password } = req.body
-
-  const user = users.find(u => u.email === email)
-  if (!user) return res.status(404).json({ message: 'User not found' })
-
-  const isMatch = await bcrypt.compare(password, user.password)
-  if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' })
-
-  // Create token with user data
-  const token = jwt.sign(
-    { 
-      id: user.id,
+    // Create response object without password
+    const userResponse = {
+      id: user._id,
+      name: user.name,
       email: user.email,
-      name: user.name 
-    }, 
-    JWT_SECRET, 
-    { expiresIn: '1h' }
-  )
-  
-  // Return user data (excluding password) and token
-  const { password: _, ...userWithoutPassword } = user
-  res.json({ 
-    token,
-    user: userWithoutPassword
-  })
-}
+      createdAt: user.createdAt
+    };
+
+    res.status(201).json({
+      success: true,
+      token,
+      user: userResponse
+    });
+  } catch (error) {
+    console.error('Signup error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during signup',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};
+
+// @desc    Login user
+// @route   POST /api/auth/signin
+// @access  Public
+export const signinUser = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate email & password
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide an email and password'
+      });
+    }
+
+    // Check for user
+    const user = await User.findOne({ email }).select('+password');
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid credentials'
+      });
+    }
+
+    // Check if password matches
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid credentials'
+      });
+    }
+
+    // Create token
+    const token = user.getSignedJwtToken();
+
+    // Create response object without password
+    const userResponse = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt
+    };
+
+    res.status(200).json({
+      success: true,
+      token,
+      user: userResponse
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during login',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};
+
+// @desc    Get current logged in user
+// @route   GET /api/auth/me
+// @access  Private
+export const getMe = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    
+    res.status(200).json({
+      success: true,
+      data: user
+    });
+  } catch (error) {
+    console.error('Get me error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};
