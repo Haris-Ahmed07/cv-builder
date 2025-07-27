@@ -18,8 +18,15 @@ const SignIn = () => {
     setLoading(true)
     setError('')
     
+    // Validate inputs
+    if (!email || !password) {
+      setError('Please enter both email and password')
+      setLoading(false)
+      return
+    }
+    
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/signin`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/auth/signin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -28,9 +35,24 @@ const SignIn = () => {
       const data = await res.json()
       
       if (res.ok) {
-        login(data)  // This will handle token storage and navigation
+        // The backend returns success, token, and user data
+        if (data.success && data.token) {
+          login({
+            token: data.token,
+            user: data.user
+          })
+        } else {
+          throw new Error('Invalid response format from server')
+        }
       } else {
-        setError(data.message || 'Sign in failed. Please check your credentials.')
+        // Handle different error status codes
+        if (res.status === 400) {
+          setError('Missing email or password')
+        } else if (res.status === 401) {
+          setError('Invalid credentials')
+        } else {
+          setError(data.message || 'Sign in failed. Please try again.')
+        }
       }
     } catch (err) {
       setError('Network error. Please try again.')

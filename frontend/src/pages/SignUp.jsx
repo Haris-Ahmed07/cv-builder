@@ -15,6 +15,11 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long')
+      return
+    }
+    
     if (password !== confirmPassword) {
       setError('Passwords do not match')
       return
@@ -24,29 +29,39 @@ const SignUp = () => {
     setError('')
     
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/signup`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({ 
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          password: password
+        }),
       })
       
       const data = await res.json()
       
-      if (res.ok) {
+      if (res.status === 201) {
         // Log in the user immediately after successful signup
         login({
           token: data.token,
           user: {
-            email,
-            name: data.user?.name || name,
-            id: data.user?.id
+            id: data.user.id,
+            name: data.user.name,
+            email: data.user.email
           }
         })
+        // Redirect to home page after successful signup
+        navigate('/')
+      } else if (res.status === 400) {
+        setError('A user with this email already exists')
+      } else if (res.status === 500) {
+        setError('Server error. Please try again later.')
       } else {
         setError(data.message || 'Sign up failed. Please try again.')
       }
     } catch (err) {
-      setError('Network error. Please try again.')
+      setError('Network error. Please check your connection and try again.')
       console.error('Sign up error:', err)
     } finally {
       setLoading(false)
