@@ -1,24 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useResume } from '../contexts/ResumeContext';
+import { toast } from 'react-toastify';
 import BuilderLayout from '../components/Builder/BuilderLayout';
 import BuilderForm from '../components/Builder/BuilderForm';
 import CVPreview from '../components/CVPreview';
 import DownloadButton from '../components/DownloadButton';
-import { toast } from 'react-toastify';
-import { useState } from 'react';
+import SaveButton from '../components/SaveButton';
 
 const Home = () => {
+  const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
-  const { resume, loading, error, fetchResume } = useResume();
+  const { resume, loading, error, fetchResume, resetResume } = useResume();
   const [retryCount, setRetryCount] = useState(0);
   const [lastError, setLastError] = useState(null);
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/signin', { state: { from: '/home' } });
+      return;
+    }
+    setIsLoading(false);
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
       return;
     }
 
@@ -26,14 +34,14 @@ const Home = () => {
     if (lastError === null || retryCount < 3) {
       const loadResume = async () => {
         try {
-          console.log('[Home] Attempting to load resume, attempt:', retryCount + 1);
+
           await fetchResume();
           // If successful, reset error state
           if (lastError !== null) {
             setLastError(null);
           }
         } catch (err) {
-          console.error('[Home] Failed to load resume:', err);
+
           const newError = err.message || 'Failed to load resume';
           setLastError(newError);
           
@@ -45,7 +53,7 @@ const Home = () => {
           // Auto-retry with exponential backoff (max 3 retries)
           if (retryCount < 2) {
             const delay = Math.min(1000 * Math.pow(2, retryCount), 8000);
-            console.log(`[Home] Will retry in ${delay}ms`);
+
             const timer = setTimeout(() => {
               setRetryCount(prev => prev + 1);
             }, delay);
@@ -103,22 +111,40 @@ const Home = () => {
       </div>
     );
   }
+
   return (
-    <BuilderLayout
-      form={<BuilderForm />}
-      preview={
-        <div className="w-full lg:w-1/2 flex flex-col gap-4">
-          <div className="bg-white rounded-2xl shadow-xl p-6 h-full overflow-hidden max-h-[90vh] relative">
-            {/* Top bar inside preview container */}
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-gray-800">Live Preview</h2>
-              <DownloadButton />
-            </div>
-            <CVPreview />
+    <div className="w-full h-screen flex flex-col overflow-hidden">
+      <BuilderLayout
+        form={
+          <div className="h-full w-full overflow-y-auto ">
+            <BuilderForm className="h-full" />
           </div>
-        </div>
-      }
-    />
+        }
+        preview={
+          <div className="w-full h-full flex flex-col">
+            <div className="bg-white h-full w-full flex flex-col overflow-y-auto">
+            {/* Top bar inside preview container */}
+            <div className="p-4">
+              <h2 className="text-2xl font-bold text-gray-800">Live Preview</h2>
+            </div>
+            <div className="flex-1 overflow-y-auto mb-4">
+              <CVPreview className="h-full" />
+            </div>
+            <div className="mt-6 pt-4 border-t border-gray-200">
+              <div className="grid grid-cols-2 gap-4 w-full">
+                <div className="w-full h-16">
+                  <SaveButton className="w-full h-full text-base" />
+                </div>
+                <div className="w-full h-16">
+                  <DownloadButton className="w-full h-full text-base" />
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        }
+      />
+    </div>
   )
 }
 

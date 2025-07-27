@@ -14,7 +14,7 @@ import {
 import useCVStore from '../../store/cvStore'
 import SectionWrapper from './SectionWrapper'
 import sectionMap from './sectionMap'
-const BuilderForm = () => {
+const BuilderForm = ({ className = '' }) => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 8 }
@@ -35,8 +35,10 @@ const BuilderForm = () => {
   }
 
   return (
-    <div className="w-full lg:w-1/2 bg-white rounded-2xl shadow-xl p-6 overflow-y-auto max-h-[90vh]">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Build Your CV</h2>
+    <div className={`w-full h-full bg-white overflow-y-auto p-4 ${className}`}>
+      <div className="p-4">
+        <h2 className="text-2xl font-bold text-gray-800">Build Your CV</h2>
+      </div>
 
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={sectionOrder} strategy={verticalListSortingStrategy}>

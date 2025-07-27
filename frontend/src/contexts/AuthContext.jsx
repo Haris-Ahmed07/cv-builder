@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      console.log('Fetching user data...');
+
       const response = await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/auth/me`, {
         headers: {
           'Authorization': `Bearer ${storedToken}`,
@@ -26,11 +26,11 @@ export const AuthProvider = ({ children }) => {
         credentials: 'include' // Important for cookies if using them
       });
 
-      console.log('Auth response status:', response.status);
+
       
       if (response.ok) {
         const data = await response.json();
-        console.log('User data received:', data);
+
         
         if (data.success && data.data) {
           const userData = data.data;
@@ -42,12 +42,12 @@ export const AuthProvider = ({ children }) => {
       }
       
       // If token is invalid or expired, clear it
-      console.log('Invalid or expired token, logging out...');
+
       logout();
       return null;
       
     } catch (error) {
-      console.error('Error in getCurrentUser:', error);
+
       // Don't log out on network errors, just set loading to false
       setLoading(false);
       return null;
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
           }
         }
       } catch (error) {
-        console.error('Error in auth initialization:', error);
+
         if (isMounted) {
           setLoading(false);
         }

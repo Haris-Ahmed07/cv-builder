@@ -3,7 +3,7 @@ import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 
 // Button to download the CV preview as a PDF
-const DownloadButton = () => {
+const DownloadButton = ({ className = '' }) => {
   // Handles the download process
   const handleDownload = async () => {
     const cv = document.getElementById('cv-preview') // Get the CV element
@@ -31,14 +31,20 @@ const DownloadButton = () => {
   }
 
   return (
-    <div className="text-center mt-6">
-      <button
-        onClick={handleDownload}
-        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Download CV as PDF
-      </button>
-    </div>
+    <button
+      onClick={handleDownload}
+      className={`
+        bg-blue-600 hover:bg-blue-700 
+        text-white font-semibold 
+        rounded-lg w-full h-full 
+        transition-all duration-200 
+        transform hover:scale-[1.02] active:scale-[0.98]
+        flex items-center justify-center
+        ${className}
+      `}
+    >
+      <span className="whitespace-nowrap">Download CV as PDF</span>
+    </button>
   )
 }
 
