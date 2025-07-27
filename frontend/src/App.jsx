@@ -18,7 +18,7 @@ const AppContent = () => {
       </div>
       
       {/* Main content with gap from header */}
-      <main className="pt-6 pb-6 px-4 sm:px-6 lg:px-8">
+      <main className="pt-6 pb-6 px-4 sm:px-6 lg:px-8 ">
         <div className="max-w-10xl min-w-7xl mx-auto">
           <Routes>
             <Route 
