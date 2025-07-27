@@ -13,13 +13,13 @@ const Header = () => {
           <div className="flex-shrink-0 flex items-center">
             <Link
               to={user ? "/home" : "/"}
-              className="text-xl font-bold text-gray-800 hover:text-gray-600 transition-colors"
+              className="text-lg sm:text-xl font-bold text-gray-800 hover:text-gray-600 transition-colors"
             >
               CV Builder
             </Link>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             {user ? (
               <div className="relative flex items-center">
                 <button
@@ -29,12 +29,12 @@ const Header = () => {
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                 >
                   <span className="sr-only">Open user menu</span>
-                  <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                    <span className="text-indigo-600 font-medium">
+                  <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                    <span className="text-indigo-600 font-medium text-sm sm:text-base">
                       {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                     </span>
                   </div>
-                  <span className="ml-2 text-sm font-medium text-gray-700">
+                  <span className="ml-1 sm:ml-2 text-xs sm:text-sm font-medium text-gray-700">
                     {user.name || 'User'}
                   </span>
                 </button>
@@ -42,13 +42,13 @@ const Header = () => {
                 {isProfileOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setIsProfileOpen(false)}></div>
-                    <div className="absolute right-0 top-full mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                    <div className="absolute right-0 top-full mt-2 w-40 sm:w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                       <button
                         onClick={() => {
                           logout();
                           setIsProfileOpen(false);
                         }}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                        className="block w-full text-left px-3 sm:px-4 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                       >
                         Sign out
                       </button>
@@ -57,16 +57,16 @@ const Header = () => {
                 )}
               </div>
             ) : (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 sm:space-x-4">
                 <Link
                   to="/signin"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-medium px-3 sm:px-4 py-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Sign Up
                 </Link>

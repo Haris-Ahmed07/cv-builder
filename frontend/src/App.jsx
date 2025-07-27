@@ -12,15 +12,14 @@ import Footer from './components/Footer'
 
 const AppContent = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-200 via-white to-indigo-100 text-gray-900">
-      
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-indigo-200 via-white to-indigo-100 text-gray-900">
       <div className="sticky top-0 z-50 backdrop-blur-md bg-white/60 shadow border-b border-white/30">
         <Header />
       </div>
 
       {/* Main content area */}
-      <main className="pt-6 pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <main className="flex-1 w-full py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+        <div className="w-full max-w-7xl mx-auto ">
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/signup" element={<SignUp />} />

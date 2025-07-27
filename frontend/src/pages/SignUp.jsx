@@ -12,8 +12,29 @@ const SignUp = () => {
   const { login } = useAuth()
   const navigate = useNavigate()
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const validateName = (name) => {
+    const nameRegex = /^[a-zA-Z\s]+$/
+    return nameRegex.test(name)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setError('')
+
+    // Client-side validation
+    if (!validateName(name.trim())) {
+      setError('Name can only contain letters and spaces')
+      return
+    }
+    if (!validateEmail(email.trim().toLowerCase())) {
+      setError('Please enter a valid email address')
+      return
+    }
     if (password.length < 6) {
       setError('Password must be at least 6 characters long')
       return
@@ -22,8 +43,8 @@ const SignUp = () => {
       setError('Passwords do not match')
       return
     }
+
     setLoading(true)
-    setError('')
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/auth/signup`, {
         method: 'POST',
@@ -61,33 +82,33 @@ const SignUp = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="backdrop-blur-lg rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.4)] w-full max-w-sm relative p-8 bg-white/20 border border-white/30">
+    <div className="flex flex-col h-[calc(100vh-8rem)] sm:h-[calc(100vh-9rem)] justify-center px-4 sm:px-6 lg:px-8">
+      <div className="backdrop-blur-lg rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.4)] w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto p-4 sm:p-6 bg-white/20 border border-white/30">
         {/* Back Button */}
         <button
           onClick={() => navigate('/')}
-          className="absolute left-4 top-4 flex items-center justify-center px-3 py-1.5 bg-white/30 border border-white/50 rounded-full text-blue-700 hover:bg-white/50 hover:border-white/70 hover:text-blue-900 font-medium shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-300"
+          className="absolute left-3 sm:left-4 top-3 sm:top-4 flex items-center justify-center px-3 sm:px-4 py-1.5 sm:py-2 bg-white/30 border border-white/50 rounded-full text-blue-700 hover:bg-white/50 hover:border-white/70 hover:text-blue-900 font-medium shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-300"
           aria-label="Back"
           disabled={loading}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
 
-        <h2 className="text-3xl font-extrabold text-center mb-6 mt-8 text-indigo-600">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-3 sm:mb-4 mt-8 sm:mt-10 text-indigo-600">
           Create Account
         </h2>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm">
+          <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-red-50 text-red-700 rounded-lg text-sm sm:text-base">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-800 mb-1">
+            <label htmlFor="name" className="block text-sm sm:text-base font-medium text-gray-800 mb-1.5">
               Full Name
             </label>
             <input
@@ -95,7 +116,7 @@ const SignUp = () => {
               type="text"
               required
               placeholder="Enter your full name"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent"
+              className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent text-sm sm:text-base"
               value={name}
               onChange={(e) => setName(e.target.value)}
               disabled={loading}
@@ -103,7 +124,7 @@ const SignUp = () => {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-800 mb-1">
+            <label htmlFor="email" className="block text-sm sm:text-base font-medium text-gray-800 mb-1.5">
               Email
             </label>
             <input
@@ -111,7 +132,7 @@ const SignUp = () => {
               type="email"
               required
               placeholder="Enter your email address"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent"
+              className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent text-sm sm:text-base"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
@@ -119,7 +140,7 @@ const SignUp = () => {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-800 mb-1">
+            <label htmlFor="password" className="block text-sm sm:text-base font-medium text-gray-800 mb-1.5">
               Password
             </label>
             <input
@@ -127,7 +148,7 @@ const SignUp = () => {
               type="password"
               required
               placeholder="••••••••"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent"
+              className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent text-sm sm:text-base"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
@@ -135,7 +156,7 @@ const SignUp = () => {
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-800 mb-1">
+            <label htmlFor="confirmPassword" className="block text-sm sm:text-base font-medium text-gray-800 mb-1.5">
               Confirm Password
             </label>
             <input
@@ -143,7 +164,7 @@ const SignUp = () => {
               type="password"
               required
               placeholder="••••••••"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent"
+              className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent text-sm sm:text-base"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               disabled={loading}
@@ -153,12 +174,12 @@ const SignUp = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            className="w-full bg-indigo-600 text-white py-2.5 sm:py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed mt-3 sm:mt-4 text-sm sm:text-base"
           >
             {loading ? 'Creating Account...' : 'Create Account'}
           </button>
 
-          <p className="text-center text-sm text-gray-800 pt-2">
+          <p className="text-center text-sm sm:text-base text-gray-800 pt-2">
             Already have an account?{' '}
             <Link
               to="/signin"
