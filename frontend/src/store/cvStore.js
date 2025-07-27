@@ -142,6 +142,27 @@ const useCVStore = create((set) => ({
     set((state) => ({
       languages: state.languages.filter((_, i) => i !== index),
     })),
-}))
 
-export default useCVStore
+  // Updates the entire CV store with new resume data
+  updateCVStore: (newData) => {
+    console.log('Updating CV store with new data:', newData);
+    return set((state) => {
+      const updatedState = {
+        personalInfo: newData.personalInfo || state.personalInfo,
+        summary: newData.summary || state.summary,
+        education: Array.isArray(newData.education) ? [...newData.education] : state.education,
+        workExperience: Array.isArray(newData.workExperience) ? [...newData.workExperience] : state.workExperience,
+        skills: Array.isArray(newData.skills) ? [...newData.skills] : state.skills,
+        achievements: Array.isArray(newData.achievements) ? [...newData.achievements] : state.achievements,
+        projects: Array.isArray(newData.projects) ? [...newData.projects] : state.projects,
+        certifications: Array.isArray(newData.certifications) ? [...newData.certifications] : state.certifications,
+        languages: Array.isArray(newData.languages) ? [...newData.languages] : state.languages,
+        sectionOrder: Array.isArray(newData.sectionOrder) ? [...newData.sectionOrder] : state.sectionOrder,
+      };
+      console.log('CV store updated with:', updatedState);
+      return updatedState;
+    });
+  },
+}));
+
+export default useCVStore;

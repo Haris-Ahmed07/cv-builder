@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from './AuthContext';
+import useCVStore from '../store/cvStore';
 
 const ResumeContext = createContext();
 
@@ -46,7 +47,7 @@ export function ResumeProvider({ children }) {
     
     // If we already have a fetch in progress, return that promise
     if (activeFetch && !force) {
-      console.log('[ResumeContext] Using existing fetch promise');
+
       return activeFetch;
     }
 
@@ -58,7 +59,7 @@ export function ResumeProvider({ children }) {
       throw error;
     }
 
-    console.log('[ResumeContext] Starting resume fetch');
+
     setLoading(true);
     setError(null);
 
@@ -72,7 +73,7 @@ export function ResumeProvider({ children }) {
       try {
         const startTime = Date.now();
         const apiUrl = `${import.meta.env.VITE_BACKEND_API_BASE_URL}/resume`;
-        console.log(`[ResumeContext] Fetching resume from: ${apiUrl}`);
+
         
         const response = await fetch(apiUrl, {
           headers: {
@@ -84,11 +85,11 @@ export function ResumeProvider({ children }) {
         });
 
         const responseTime = Date.now() - startTime;
-        console.log(`[ResumeContext] Response received in ${responseTime}ms`);
+
 
         if (response.status === 401) {
           // Token expired, log out
-          console.log('[ResumeContext] 401 Unauthorized - logging out');
+
           if (isMounted.current) {
             logout();
           }
@@ -96,7 +97,7 @@ export function ResumeProvider({ children }) {
         }
 
         if (response.status === 204) {
-          console.log('[ResumeContext] No content (204) - this is normal for new users');
+
           if (isMounted.current) {
             setResume(prev => ({ ...prev })); // Keep existing structure but trigger update
           }
@@ -104,7 +105,7 @@ export function ResumeProvider({ children }) {
         }
 
         if (response.status === 404) {
-          console.log('[ResumeContext] No resume found (404) - this is normal for new users');
+
           if (isMounted.current) {
             setResume(prev => ({ ...prev })); // Keep existing structure but trigger update
           }
@@ -118,20 +119,25 @@ export function ResumeProvider({ children }) {
         }
 
         const data = await response.json();
-        console.log('[ResumeContext] Resume data loaded successfully');
+
         
         if (isMounted.current) {
+          const resumeData = data.data || data;
           setResume(prev => ({
             ...prev,
-            ...(data.data || data)
+            ...resumeData
           }));
+          
+          // Update CV store with the fetched resume data
+          const { updateCVStore } = useCVStore.getState();
+          updateCVStore(resumeData);
         }
         
         return data.data || data;
       } catch (err) {
         // Don't set error for aborted requests
         if (err.name !== 'AbortError') {
-          console.error('[ResumeContext] Error fetching resume:', err);
+
           if (isMounted.current) {
             setError(err.message || 'Failed to fetch resume data');
           }
@@ -162,14 +168,52 @@ export function ResumeProvider({ children }) {
     };
   }, []);
 
+  // Function to update the CV store with resume data
+  const updateCVStoreWithResumeData = useCallback((resumeData) => {
+    if (!resumeData) return;
+    
+    console.log('Updating CV store with resume data:', resumeData);
+    const { updateCVStore } = useCVStore.getState();
+    
+    // Ensure all arrays are properly initialized
+    const processedData = {
+      ...resumeData,
+      education: Array.isArray(resumeData.education) ? resumeData.education : [],
+      workExperience: Array.isArray(resumeData.workExperience) ? resumeData.workExperience : [],
+      skills: Array.isArray(resumeData.skills) ? resumeData.skills : [],
+      achievements: Array.isArray(resumeData.achievements) ? resumeData.achievements : [],
+      projects: Array.isArray(resumeData.projects) ? resumeData.projects : [],
+      certifications: Array.isArray(resumeData.certifications) ? resumeData.certifications : [],
+      languages: Array.isArray(resumeData.languages) ? resumeData.languages : [],
+    };
+    
+    updateCVStore(processedData);
+  }, []);
+
   // Initial fetch when component mounts or token changes
   useEffect(() => {
-    if (token) {
-      fetchResume().catch(console.error);
-    } else {
+    if (!token) {
       setLoading(false);
+      return;
     }
-  }, [token, fetchResume]);
+
+    const loadResume = async () => {
+      try {
+        const resumeData = await fetchResume();
+        if (resumeData) {
+          updateCVStoreWithResumeData(resumeData);
+        }
+      } catch (error) {
+        console.error('Error in resume loading:', error);
+      } finally {
+        if (isMounted.current) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadResume();
+  }, [token, fetchResume, updateCVStoreWithResumeData]);
 
   const value = {
     resume,
