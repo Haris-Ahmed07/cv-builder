@@ -15,14 +15,12 @@ const Home = () => {
   const { resume, loading, error, fetchResume, resetResume } = useResume();
   const [retryCount, setRetryCount] = useState(0);
   const [lastError, setLastError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/signin', { state: { from: '/home' } });
       return;
     }
-    setIsLoading(false);
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
@@ -30,30 +28,21 @@ const Home = () => {
       return;
     }
 
-    // Only attempt to load resume if we don't have an error or we're retrying
     if (lastError === null || retryCount < 3) {
       const loadResume = async () => {
         try {
-
           await fetchResume();
-          // If successful, reset error state
-          if (lastError !== null) {
-            setLastError(null);
-          }
+          if (lastError !== null) setLastError(null);
         } catch (err) {
-
           const newError = err.message || 'Failed to load resume';
           setLastError(newError);
 
-          // Only show error toast on the first failure
           if (retryCount === 0) {
             toast.error('Having trouble loading your resume. Will retry...');
           }
 
-          // Auto-retry with exponential backoff (max 3 retries)
           if (retryCount < 2) {
             const delay = Math.min(1000 * Math.pow(2, retryCount), 8000);
-
             const timer = setTimeout(() => {
               setRetryCount(prev => prev + 1);
             }, delay);
@@ -66,9 +55,8 @@ const Home = () => {
 
       loadResume();
     }
-  }, [isAuthenticated, navigate, fetchResume, retryCount, lastError]);
+  }, [isAuthenticated, fetchResume, retryCount, lastError]);
 
-  // Show loading state while checking authentication or loading resume
   if (!isAuthenticated || (loading && retryCount === 0)) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
@@ -80,7 +68,6 @@ const Home = () => {
     );
   }
 
-  // Show error state if all retries failed
   if (lastError && retryCount >= 3) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
@@ -113,10 +100,10 @@ const Home = () => {
   }
 
   return (
-    <div className="w-full h-screen flex flex-col overflow-hidden">
+    <div className="w-full h-screen flex flex-col overflow-hidden backdrop-blur-lg bg-white/20 border border-white/30 rounded-lg shadow-lg p-4">
       <BuilderLayout
         form={
-          <div className="h-full w-full overflow-y-auto ">
+          <div className="h-full w-full overflow-y-auto">
             <BuilderForm className="h-full" />
           </div>
         }
@@ -149,7 +136,7 @@ const Home = () => {
         }
       />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

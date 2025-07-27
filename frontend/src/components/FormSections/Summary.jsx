@@ -1,20 +1,17 @@
 import React from 'react'
 import useCVStore from '../../store/cvStore'
 
-// Summary component for editing the professional summary section of the CV
 const Summary = () => {
-  // Get summary value and setter from the global store
   const { summary, setSummary } = useCVStore()
 
   return (
-    <div className="bg-white p-6 rounded shadow-md mb-6">
-      {/* Textarea for user to input their summary */}
+    <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <textarea
         value={summary}
-        onChange={(e) => setSummary(e.target.value)} // Update summary in store on change
+        onChange={(e) => setSummary(e.target.value)}
         placeholder="Write a short summary about yourself..."
         rows={5}
-        className="w-full border border-gray-300 rounded px-3 py-2"
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
       />
     </div>
   )

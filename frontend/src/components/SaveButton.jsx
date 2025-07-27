@@ -54,7 +54,7 @@ const SaveButton = ({ className = '', children = 'Save Resume' }) => {
       onClick={handleSave}
       disabled={isSaving}
       className={`
-        bg-blue-600 hover:bg-blue-700 
+        bg-indigo-600 hover:bg-indigo-700 
         text-white font-semibold 
         rounded-lg w-full h-full 
         transition-all duration-200 

@@ -13,41 +13,37 @@ const Landing = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  if (isAuthenticated) {
-    return null; // or a loading spinner
-  }
+  if (isAuthenticated) return null;
 
   return (
-    <div className="bg-gray-50 flex flex-col min-h-[calc(100vh-4rem)]">
-      {/* Main Content */}
+    <div className="bg-[url('/bg-pattern.png')] bg-cover bg-no-repeat bg-center flex flex-col min-h-[calc(100vh-4rem)]">
       <main className="flex-1 flex flex-col justify-center items-center text-center px-4 py-12">
-        <div className="max-w-4xl mx-auto">
+        <div className="backdrop-blur-xl bg-white/30 border border-white/20 shadow-2xl rounded-3xl p-10 w-full max-w-4xl">
           <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
-            Create Professional CVs 
+            Create Professional CVs
             <span className="text-indigo-600 block">Effortlessly</span>
           </h1>
-          
+
           <p className="text-xl text-gray-700 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Build modern, clean, and ATS-friendly resumes in minutes. No design skills needed. 
+            Build modern, clean, and ATS-friendly resumes in minutes. No design skills needed.
             Live preview and instant PDF download.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Link 
-              to="/signup" 
+            <Link
+              to="/signup"
               className="bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
             >
               Get Started Free
             </Link>
-            <Link 
-              to="/signin" 
+            <Link
+              to="/signin"
               className="text-indigo-600 font-semibold text-lg hover:text-indigo-800 transition-colors border-2 border-indigo-600 px-8 py-4 rounded-lg hover:bg-indigo-50"
             >
               Sign In
             </Link>
           </div>
 
-          {/* Features Section */}
           <div className="grid md:grid-cols-3 gap-8 mt-16">
             <div className="text-center">
               <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -58,7 +54,7 @@ const Landing = () => {
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Lightning Fast</h3>
               <p className="text-gray-600">Create your CV in minutes with our intuitive builder</p>
             </div>
-            
+
             <div className="text-center">
               <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +64,7 @@ const Landing = () => {
               <h3 className="text-xl font-semibold text-gray-900 mb-2">ATS Friendly</h3>
               <p className="text-gray-600">Optimized for applicant tracking systems</p>
             </div>
-            
+
             <div className="text-center">
               <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,8 +77,6 @@ const Landing = () => {
           </div>
         </div>
       </main>
-
-      <Footer />  
     </div>
   );
 };

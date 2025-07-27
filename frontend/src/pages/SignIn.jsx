@@ -17,23 +17,23 @@ const SignIn = () => {
     e.preventDefault()
     setLoading(true)
     setError('')
-    
+
     // Validate inputs
     if (!email || !password) {
       setError('Please enter both email and password')
       setLoading(false)
       return
     }
-    
+
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/auth/signin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       })
-      
+
       const data = await res.json()
-      
+
       if (res.ok) {
         // The backend returns success, token, and user data
         if (data.success && data.token) {
@@ -63,8 +63,8 @@ const SignIn = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-200">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm relative border border-gray-200">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="backdrop-blur-lg rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.4)] w-full max-w-sm relative p-8 bg-white/20 border border-white/30">
         {/* Back Button */}
         <button
           onClick={() => navigate('/')}
@@ -76,15 +76,15 @@ const SignIn = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        
+
         <h2 className="text-3xl font-extrabold text-center mb-6 mt-8 text-blue-700">Welcome Back</h2>
-        
+
         {error && (
           <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm">
             {error}
           </div>
         )}
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -92,14 +92,14 @@ const SignIn = () => {
               id="email"
               type="email"
               required
-              placeholder="you@example.com"
+              placeholder="Enter your email address"
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
             />
           </div>
-          
+
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
@@ -113,7 +113,7 @@ const SignIn = () => {
               disabled={loading}
             />
           </div>
-          
+
           <button
             type="submit"
             disabled={loading}
@@ -121,11 +121,11 @@ const SignIn = () => {
           >
             {loading ? 'Signing In...' : 'Sign In'}
           </button>
-          
+
           <p className="text-center text-sm text-gray-600 pt-2">
             Don't have an account?{' '}
-            <Link 
-              to="/signup" 
+            <Link
+              to="/signup"
               className="text-blue-600 hover:underline font-medium"
               state={{ from: location.state?.from }}
             >
@@ -136,6 +136,7 @@ const SignIn = () => {
       </div>
     </div>
   )
+
 }
 
 export default SignIn

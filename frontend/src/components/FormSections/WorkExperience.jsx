@@ -2,10 +2,8 @@ import React, { useState } from 'react'
 import useCVStore from '../../store/cvStore'
 
 const WorkExperience = () => {
-  // Pull work experience data and actions from Zustand store
   const { workExperience, addWorkExperience, removeWorkExperience } = useCVStore()
 
-  // Local form state to handle input fields
   const [form, setForm] = useState({
     title: '',
     company: '',
@@ -14,22 +12,19 @@ const WorkExperience = () => {
     description: '',
   })
 
-  // Update form fields as user types
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  // Handle form submission: add to store and reset form
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!form.title.trim() || !form.company.trim()) return
     addWorkExperience(form)
     setForm({ title: '', company: '', startDate: '', endDate: '', description: '' })
   }
 
   return (
     <div className="bg-white p-6 rounded shadow-md mb-6">
-
-      {/* Work experience input form */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           type="text"
@@ -38,6 +33,7 @@ const WorkExperience = () => {
           onChange={handleChange}
           placeholder="Job Title"
           className="w-full p-2 border border-gray-300 rounded"
+          required
         />
         <input
           type="text"
@@ -46,9 +42,10 @@ const WorkExperience = () => {
           onChange={handleChange}
           placeholder="Company"
           className="w-full p-2 border border-gray-300 rounded"
+          required
         />
         <input
-          type="text"
+          type="month"
           name="startDate"
           value={form.startDate}
           onChange={handleChange}
@@ -56,7 +53,7 @@ const WorkExperience = () => {
           className="w-full p-2 border border-gray-300 rounded"
         />
         <input
-          type="text"
+          type="month"
           name="endDate"
           value={form.endDate}
           onChange={handleChange}
@@ -78,21 +75,18 @@ const WorkExperience = () => {
         </button>
       </form>
 
-      {/* Display list of added experiences */}
       <div className="mt-4">
         {workExperience.map((exp, idx) => (
           <div key={idx} className="border p-3 mt-2 rounded relative">
-            {/* Remove experience button */}
             <button
               onClick={() => removeWorkExperience(idx)}
               className="absolute top-1 right-2 text-red-500 text-sm"
             >
               Remove
             </button>
-            {/* Display experience info */}
             <p className="font-semibold">{exp.title} at {exp.company}</p>
             <p className="text-sm text-gray-500">{exp.startDate} - {exp.endDate}</p>
-            <p className="text-sm">{exp.description}</p>
+            <p className="text-sm whitespace-pre-line">{exp.description}</p>
           </div>
         ))}
       </div>

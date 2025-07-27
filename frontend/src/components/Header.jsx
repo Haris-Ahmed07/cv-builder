@@ -7,25 +7,24 @@ const Header = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-sm w-full">
+    <header className="backdrop-blur-md bg-white/30 border-b border-white/20 w-full z-50 shadow-[0_4px_15px_rgba(0,0,0,0.4)]">
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 w-full">
           <div className="flex-shrink-0 flex items-center">
-            <Link 
-              to={user ? "/home" : "/"} 
+            <Link
+              to={user ? "/home" : "/"}
               className="text-xl font-bold text-gray-800 hover:text-gray-600 transition-colors"
             >
               CV Builder
             </Link>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             {user ? (
-              // Authenticated user menu
               <div className="relative flex items-center">
                 <button
                   type="button"
-                  className="flex items-center max-w-xs rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hover:bg-gray-50 transition-colors px-2 py-1"
+                  className="flex items-center max-w-xs rounded-full bg-white/70 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hover:bg-white/90 transition-colors px-2 py-1"
                   id="user-menu"
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                 >
@@ -58,11 +57,10 @@ const Header = () => {
                 )}
               </div>
             ) : (
-              // Unauthenticated navigation
               <div className="flex items-center space-x-4">
                 <Link
                   to="/signin"
-                  className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Sign In
                 </Link>
