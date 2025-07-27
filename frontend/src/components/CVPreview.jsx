@@ -1,84 +1,63 @@
 import React from 'react'
 import {
-  CV_WIDTH,
-  CV_HEIGHT,
-  PREVIEW_MAX_WIDTH,
-  PREVIEW_MAX_HEIGHT,
-  PREVIEW_SCALE,
-  SCALE,
-  PREVIEW_BACKGROUND,
+  A4_WIDTH,
+  A4_HEIGHT,
   CV_FONT_FAMILY,
   CV_FONT_SIZE,
   CV_TEXT_COLOR,
   CV_LINE_HEIGHT,
-  CV_PADDING
+  CV_PADDING,
+  PREVIEW_SCALE,
+  PDF_SCALE
 } from '../constants/cvDimensions'
 import CVSections from './CVSections.jsx'
 
 const CVPreview = ({ isPreview = true, className }) => {
+  // Common styles for both preview and PDF modes
+  const cvStyles = {
+    width: `${A4_WIDTH}px`,
+    height: `${A4_HEIGHT}px`,
+    fontFamily: CV_FONT_FAMILY,
+    fontSize: CV_FONT_SIZE,
+    color: CV_TEXT_COLOR,
+    lineHeight: CV_LINE_HEIGHT,
+    padding: CV_PADDING,
+    boxSizing: 'border-box',
+    overflow: 'hidden',
+    backgroundColor: 'white',
+    ...(isPreview && { // Only add border in preview mode
+      border: '1px solid #000',
+      borderRadius: '4px'
+    })
+  };
+
   if (isPreview) {
-    // For preview mode, use responsive sizing
+    // For preview mode, apply scaling
     return (
-      <div
-        className={`flex justify-center items-center w-full h-full ${className || ''}`}
-        style={{
-          background: PREVIEW_BACKGROUND,
-          overflow: 'hidden',
-          position: 'relative',
-          maxWidth: PREVIEW_MAX_WIDTH,
-          maxHeight: PREVIEW_MAX_HEIGHT
-        }}
-      >
+      <div className={`flex justify-center items-center w-full h-full ${className || ''}`}>
         <div
           id="cv-preview"
-          className="bg-white border border-black rounded"
           style={{
+            ...cvStyles,
             transform: `scale(${PREVIEW_SCALE})`,
             transformOrigin: 'center',
-            width: `${CV_WIDTH}px`,
-            height: `${CV_HEIGHT}px`,
-            fontFamily: CV_FONT_FAMILY,
-            fontSize: CV_FONT_SIZE,
-            color: CV_TEXT_COLOR,
-            lineHeight: CV_LINE_HEIGHT,
-            padding: CV_PADDING,
-            boxSizing: 'border-box',
-            overflow: 'hidden'
           }}
         >
           <CVSections />
         </div>
       </div>
-    )
+    );
   }
 
   // For PDF download mode, use original dimensions
   return (
-    <div
-      className={`flex justify-center items-center ${className || ''}`}
-      style={{
-        width: `${CV_WIDTH}px`,
-        height: `${CV_HEIGHT}px`,
-        background: PREVIEW_BACKGROUND,
-        overflow: 'hidden',
-        position: 'relative'
-      }}
-    >
+    <div className={`flex justify-center items-center ${className || ''}`}>
       <div
         id="cv-preview"
-        className="bg-white border border-black rounded"
         style={{
-          transform: `scale(${SCALE})`,
+          ...cvStyles,
+          transform: `scale(${PDF_SCALE})`,
           transformOrigin: 'center',
-          width: `${CV_WIDTH}px`,
-          height: `${CV_HEIGHT}px`,
-          fontFamily: CV_FONT_FAMILY,
-          fontSize: CV_FONT_SIZE,
-          color: CV_TEXT_COLOR,
-          lineHeight: CV_LINE_HEIGHT,
-          padding: CV_PADDING,
-          boxSizing: 'border-box',
-          overflow: 'hidden'
         }}
       >
         <CVSections />

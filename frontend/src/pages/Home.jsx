@@ -116,32 +116,32 @@ const Home = () => {
     <div className="w-full h-screen flex flex-col overflow-hidden">
       <BuilderLayout
         form={
-          <div className="w-full h-[800px] max-h-[calc(100vh-2rem)] overflow-y-auto">
+          <div className="h-full w-full overflow-y-auto ">
             <BuilderForm className="h-full" />
           </div>
         }
         preview={
-          <div className="w-full h-[800px] max-h-[calc(100vh-2rem)] flex flex-col">
-            <div className="bg-white h-full w-full flex flex-col overflow-hidden">
-              {/* Top bar inside preview container */}
-              <div className="p-4 flex-shrink-0">
-                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">Live Preview</h2>
-              </div>
-  
-              {/* CV Preview Container - Takes remaining space */}
-              <div className="flex-1 overflow-hidden mb-4 flex justify-center items-center min-h-0">
+          <div className="w-full h-full flex flex-col bg-white rounded-lg shadow">
+            {/* Top bar inside preview container */}
+            <div className="p-4 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">Live Preview</h2>
+            </div>
+
+            {/* CV Preview Container with fixed height */}
+            <div className="flex-1 min-h-0 overflow-auto p-4">
+              <div className="flex justify-center items-center h-full">
                 <CVPreview isPreview={true} />
               </div>
-  
-              {/* Bottom buttons */}
-              <div className="flex-shrink-0 p-2 sm:p-4 border-t border-gray-200">
-                <div className="grid grid-cols-2 gap-2 sm:gap-4 w-full">
-                  <div className="w-full h-12 sm:h-16">
-                    <SaveButton className="w-full h-full text-sm sm:text-base" />
-                  </div>
-                  <div className="w-full h-12 sm:h-16">
-                    <DownloadButton className="w-full h-full text-sm sm:text-base" />
-                  </div>
+            </div>
+
+            {/* Bottom buttons */}
+            <div className="border-t border-gray-200 bg-gray-50 min-h-[100px]">
+              <div className="h-full grid grid-cols-2 gap-4 p-4">
+                <div className="h-full">
+                  <SaveButton className="w-full h-full text-2xl font-bold rounded-lg flex items-center justify-center p-4" />
+                </div>
+                <div className="h-full">
+                  <DownloadButton className="w-full h-full text-2xl font-bold rounded-lg flex items-center justify-center p-4" />
                 </div>
               </div>
             </div>
