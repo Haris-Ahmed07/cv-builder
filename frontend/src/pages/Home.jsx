@@ -44,12 +44,12 @@ const Home = () => {
 
           const newError = err.message || 'Failed to load resume';
           setLastError(newError);
-          
+
           // Only show error toast on the first failure
           if (retryCount === 0) {
             toast.error('Having trouble loading your resume. Will retry...');
           }
-          
+
           // Auto-retry with exponential backoff (max 3 retries)
           if (retryCount < 2) {
             const delay = Math.min(1000 * Math.pow(2, retryCount), 8000);
@@ -121,25 +121,29 @@ const Home = () => {
           </div>
         }
         preview={
-          <div className="w-full h-full flex flex-col">
-            <div className="bg-white h-full w-full flex flex-col overflow-y-auto">
+          <div className="w-full h-full flex flex-col bg-white rounded-lg shadow">
             {/* Top bar inside preview container */}
-            <div className="p-4">
+            <div className="p-4 border-b border-gray-200">
               <h2 className="text-2xl font-bold text-gray-800">Live Preview</h2>
             </div>
-            <div className="flex-1 overflow-y-auto mb-4">
-              <CVPreview className="h-full" />
-            </div>
-            <div className="mt-6 pt-4 border-t border-gray-200">
-              <div className="grid grid-cols-2 gap-4 w-full">
-                <div className="w-full h-16">
-                  <SaveButton className="w-full h-full text-base" />
-                </div>
-                <div className="w-full h-16">
-                  <DownloadButton className="w-full h-full text-base" />
-                </div>
+
+            {/* CV Preview Container with fixed height */}
+            <div className="flex-1 min-h-0 overflow-auto p-4">
+              <div className="flex justify-center items-center h-full">
+                <CVPreview isPreview={true} />
               </div>
             </div>
+
+            {/* Bottom buttons */}
+            <div className="border-t border-gray-200 bg-gray-50 min-h-[100px]">
+              <div className="h-full grid grid-cols-2 gap-4 p-4">
+                <div className="h-full">
+                  <SaveButton className="w-full h-full text-2xl font-bold rounded-lg flex items-center justify-center p-4" />
+                </div>
+                <div className="h-full">
+                  <DownloadButton className="w-full h-full text-2xl font-bold rounded-lg flex items-center justify-center p-4" />
+                </div>
+              </div>
             </div>
           </div>
         }

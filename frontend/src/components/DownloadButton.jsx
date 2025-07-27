@@ -10,21 +10,83 @@ const DownloadButton = ({ className = '' }) => {
     if (!cv) return
 
     try {
-      // Convert the CV to a high-res canvas
+      // Store original styles
+      const originalOverflow = cv.style.overflow
+      const originalTransform = cv.style.transform
+      const originalBorder = cv.style.border
+      
+      // Ensure clean capture
+      cv.style.overflow = 'visible'
+      cv.style.transform = 'none'
+      cv.style.border = 'none'  // Remove any borders
+
+      // Convert the CV to a canvas with optimized settings
       const canvas = await html2canvas(cv, {
         backgroundColor: '#ffffff',
         useCORS: true,
-        scale: 4 // Increase scale for higher quality
-      })
-      const imgData = canvas.toDataURL('image/png')
-      const pdf = new jsPDF({
-        orientation: 'p',
-        unit: 'px',
-        format: [canvas.width, canvas.height] // Match canvas size
+        scale: 8, 
+        logging: false,
+        width: cv.offsetWidth,
+        height: cv.offsetHeight,
+        windowWidth: cv.scrollWidth,
+        windowHeight: cv.scrollHeight,
+        // Optimize quality vs size
+        imageTimeout: 0,
+        removeContainer: true,
+        onclone: (clonedDoc) => {
+          // Ensure no transforms or animations during capture
+          clonedDoc.getElementById('cv-preview').style.transform = 'none';
+        }
       })
 
-      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height)
-      pdf.save('cv-preview.pdf')
+      // Restore original styles
+      cv.style.overflow = originalOverflow
+      cv.style.transform = originalTransform
+      cv.style.border = originalBorder
+
+      // Define A4 dimensions in pixels at 96 DPI
+      const a4Width = 794 // 210mm in pixels at 96 DPI
+      const a4Height = 1123 // 297mm in pixels at 96 DPI
+      
+      // Calculate aspect ratio
+      const aspectRatio = canvas.width / canvas.height
+      
+      // Calculate dimensions to fit A4
+      let imgWidth = a4Width - 20 // Add some margin
+      let imgHeight = imgWidth / aspectRatio
+      
+      // If height is too large, scale to fit height instead
+      if (imgHeight > a4Height - 20) {
+        imgHeight = a4Height - 20
+        imgWidth = imgHeight * aspectRatio
+      }
+
+      // Center the image on the page
+      const xOffset = (a4Width - imgWidth) / 2
+      const yOffset = (a4Height - imgHeight) / 2
+
+      // Create PDF with A4 dimensions
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: [a4Width, a4Height]
+      })
+
+      // Convert canvas to image with quality settings
+      const imgData = canvas.toDataURL('image/jpeg', 0.8) // Using JPEG with 0.8 quality for better compression
+      
+      // Add image to PDF with calculated dimensions and position
+      pdf.addImage(imgData, 'JPEG', xOffset, yOffset, imgWidth, imgHeight, undefined, 'FAST')
+      
+      // Further optimize the PDF
+      pdf.setCreationDate(new Date())
+      pdf.setLanguage('en-US')
+      
+      // Save with optimized compression
+      pdf.save('cv.pdf', { returnPromise: true })
+        .then(() => {
+          console.log('PDF saved with optimized size')
+        })
     } catch (err) {
       console.error('Download error:', err)
     }
