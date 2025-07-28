@@ -5,11 +5,12 @@ import { getEnv } from '../utils/env';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token') || null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null); // Stores the logged-in user object
+  const [token, setToken] = useState(localStorage.getItem('token') || null); // Grab token from localStorage if available
+  const [loading, setLoading] = useState(true); // Control loading state during auth check
   const navigate = useNavigate();
 
+  // Fetch user data using token from backend
   const getCurrentUser = async () => {
     const storedToken = localStorage.getItem('token');
     if (!storedToken) {
@@ -18,22 +19,17 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-
-      // Use env helper for Jest/Vite compatibility
       const response = await fetch(`${getEnv('VITE_BACKEND_API_BASE_URL')}/auth/me`, {
         headers: {
           'Authorization': `Bearer ${storedToken}`,
           'Content-Type': 'application/json'
         },
-        credentials: 'include' // Important for cookies if using them
+        credentials: 'include' // Optional if using cookies with your backend
       });
 
-
-      
       if (response.ok) {
         const data = await response.json();
 
-        
         if (data.success && data.data) {
           const userData = data.data;
           setUser(userData);
@@ -42,36 +38,36 @@ export const AuthProvider = ({ children }) => {
           return userData;
         }
       }
-      
-      // If token is invalid or expired, clear it
 
+      // If token is invalid/expired, force logout
       logout();
       return null;
-      
-    } catch (error) {
 
-      // Don't log out on network errors, just set loading to false
+    } catch (error) {
+      // Network error or backend down, don't log out — just skip
       setLoading(false);
       return null;
     }
   };
 
-
+  // Run once when app mounts to check auth status
   useEffect(() => {
     let isMounted = true;
-    
+
     const initializeAuth = async () => {
       try {
         const storedToken = localStorage.getItem('token');
         const storedUser = localStorage.getItem('user');
-        
+
         if (storedToken) {
           setToken(storedToken);
-          // If we have a stored user, use it initially for better UX
+
+          // Temporarily use stored user for fast load
           if (storedUser) {
             setUser(JSON.parse(storedUser));
           }
-          // Always try to fetch fresh user data
+
+          // But still get fresh user data
           await getCurrentUser();
         } else {
           if (isMounted) {
@@ -79,22 +75,21 @@ export const AuthProvider = ({ children }) => {
           }
         }
       } catch (error) {
-
         if (isMounted) {
           setLoading(false);
         }
       }
     };
 
-
     initializeAuth();
-    
+
+    // Cleanup on unmount
     return () => {
       isMounted = false;
     };
-
   }, []);
 
+  // Called after successful sign in
   const login = (responseData) => {
     const { token, user } = responseData;
     localStorage.setItem('token', token);
@@ -104,7 +99,7 @@ export const AuthProvider = ({ children }) => {
     navigate('/home');
   };
 
-
+  // Clear all user data and redirect to login
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -113,7 +108,7 @@ export const AuthProvider = ({ children }) => {
     navigate('/signin');
   };
 
-
+  // All shared auth values/functions here
   const value = {
     user,
     token,
@@ -124,11 +119,10 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!token,
   };
 
-
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-
+// Hook to access auth context from any component
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -138,4 +132,3 @@ export const useAuth = () => {
 };
 
 export { AuthContext };
-

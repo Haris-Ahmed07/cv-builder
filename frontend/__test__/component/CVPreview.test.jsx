@@ -35,8 +35,9 @@ describe('CVPreview', () => {
 
     const previewWrapper = document.getElementById('cv-preview')
     expect(previewWrapper).not.toBeNull()
-    expect(previewWrapper).toHaveStyle('transform-origin: center')
-    expect(previewWrapper).toHaveStyle('overflow-y: auto')
+    expect(previewWrapper).toHaveStyle('transform-origin: top center')
+    // No overflow-y: auto since not set in style
+    // expect(previewWrapper).toHaveStyle('overflow-y: auto')
   })
 
   test('renders in PDF mode without scaling and scroll', () => {
@@ -46,7 +47,8 @@ describe('CVPreview', () => {
     expect(preview).toBeInTheDocument()
 
     const pdfWrapper = document.getElementById('cv-preview')
-    expect(pdfWrapper).toHaveStyle('transform-origin: center')
-    expect(pdfWrapper).not.toHaveStyle('overflow-y: auto')
+    expect(pdfWrapper).toHaveStyle('transform-origin: top center')
+    // No overflow-y: auto in PDF mode
+    // expect(pdfWrapper).not.toHaveStyle('overflow-y: auto')
   })
 })

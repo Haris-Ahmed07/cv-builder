@@ -1,29 +1,32 @@
 import React from 'react'
 import {
-  DndContext,
-  closestCenter,
-  PointerSensor,
-  useSensor,
-  useSensors
+  DndContext, // Context provider to enable drag and drop
+  closestCenter, // Collision detection algorithm that finds the closest center
+  PointerSensor, // Sensor for pointer (mouse/touch) input
+  useSensor, // Hook to use a single sensor
+  useSensors // Hook to combine multiple sensors
 } from '@dnd-kit/core'
 import {
-  SortableContext,
-  arrayMove,
-  verticalListSortingStrategy
+  SortableContext, // Context to enable sorting inside DndContext
+  arrayMove, // Utility to reorder items in an array
+  verticalListSortingStrategy // Strategy for vertical sorting layout
 } from '@dnd-kit/sortable'
-import useCVStore from '../../store/cvStore'
-import SectionWrapper from './SectionWrapper'
-import sectionMap from './sectionMap'
+import useCVStore from '../../store/cvStore' // Zustand store for CV state
+import SectionWrapper from './SectionWrapper' // Wrapper component for each CV section
+import sectionMap from './sectionMap' // Mapping from section id to section component
 
 const BuilderForm = ({ className = '' }) => {
+  // Setup drag sensor with activation constraint (drag starts after moving 8px)
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 8 }
     })
   )
 
+  // Get section order and setter from store
   const { sectionOrder, setSectionOrder } = useCVStore()
 
+  // Handle drag end event and reorder the sectionOrder array
   const handleDragEnd = (event) => {
     const { active, over } = event
     if (over && active.id !== over.id) {
@@ -45,8 +48,10 @@ const BuilderForm = ({ className = '' }) => {
         <h2 className="text-2xl font-bold text-gray-800">Build Your CV</h2>
       </div>
 
+      {/* Setup DnD context and sortable context */}
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={sectionOrder} strategy={verticalListSortingStrategy}>
+          {/* Render each section inside a wrapper, enabling drag handle and drop area */}
           {sectionOrder.map((id) => {
             const SectionComponent = sectionMap[id]
             return (

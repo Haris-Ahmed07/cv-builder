@@ -4,6 +4,7 @@ import useCVStore from '../../store/cvStore'
 const WorkExperience = () => {
   const { workExperience, addWorkExperience, removeWorkExperience } = useCVStore()
 
+  // form state to hold user input
   const [form, setForm] = useState({
     title: '',
     company: '',
@@ -11,30 +12,43 @@ const WorkExperience = () => {
     endDate: '',
     description: '',
   })
+
+  // track character count for description field
   const [charCount, setCharCount] = useState(0)
   const maxChars = 400
 
+  // update char count when description changes
   useEffect(() => {
     setCharCount(form.description.length)
   }, [form.description])
 
+  // update form state on input change
   const handleChange = (e) => {
     const { name, value } = e.target
-    if (name === 'description' && value.length > maxChars) {
-      return
-    }
+    if (name === 'description' && value.length > maxChars) return
     setForm({ ...form, [name]: value })
   }
 
+  // handle form submit and validate required fields
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!form.title.trim() || !form.company.trim() || !form.startDate || !form.endDate || !form.description.trim()) return
+    if (
+      !form.title.trim() ||
+      !form.company.trim() ||
+      !form.startDate ||
+      !form.endDate ||
+      !form.description.trim()
+    )
+      return
+
+    // add experience and reset form
     addWorkExperience(form)
     setForm({ title: '', company: '', startDate: '', endDate: '', description: '' })
   }
 
   return (
     <div className="bg-white p-6 rounded shadow-md mb-6">
+      {/* form to add new work experience */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           type="text"
@@ -72,6 +86,8 @@ const WorkExperience = () => {
           className="w-full p-2 border border-gray-300 rounded"
           required
         />
+
+        {/* description textarea with char limit display */}
         <div className="relative col-span-1 md:col-span-2">
           <textarea
             name="description"
@@ -80,7 +96,7 @@ const WorkExperience = () => {
             placeholder="Description *"
             required
             maxLength={maxChars}
-            className={`w-full p-2 border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded col-span-1 md:col-span-2`}
+            className={`w-full p-2 border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded`}
             rows={3}
           />
           <div className="flex justify-end mt-1">
@@ -89,6 +105,8 @@ const WorkExperience = () => {
             </span>
           </div>
         </div>
+
+        {/* submit button */}
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded col-span-1 md:col-span-2"
@@ -97,6 +115,7 @@ const WorkExperience = () => {
         </button>
       </form>
 
+      {/* list of added work experiences */}
       <div className="mt-4">
         {workExperience.map((exp, idx) => (
           <div key={idx} className="border p-3 mt-2 rounded relative">

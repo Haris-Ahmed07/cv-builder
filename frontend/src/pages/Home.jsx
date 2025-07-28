@@ -6,16 +6,15 @@ import { toast } from 'react-toastify';
 import BuilderLayout from '../components/Builder/BuilderLayout';
 import BuilderForm from '../components/Builder/BuilderForm';
 import CVPreview from '../components/CVPreview';
-import DownloadButton from '../components/DownloadButton';
-import SaveButton from '../components/SaveButton';
 
 const Home = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
   const { resume, loading, error, fetchResume, resetResume } = useResume();
-  const [retryCount, setRetryCount] = useState(0);
-  const [lastError, setLastError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0); // Tracks how many times we retried
+  const [lastError, setLastError] = useState(null); // Stores the last error
 
+  // Redirect to sign-in if user is not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/signin', { state: { from: '/home' } });
@@ -23,6 +22,7 @@ const Home = () => {
     }
   }, [isAuthenticated, navigate]);
 
+  // Tries to load resume, retries up to 3 times if it fails
   useEffect(() => {
     if (!isAuthenticated) {
       return;
@@ -32,7 +32,7 @@ const Home = () => {
       const loadResume = async () => {
         try {
           await fetchResume();
-          if (lastError !== null) setLastError(null);
+          if (lastError !== null) setLastError(null); // Clear error if successful
         } catch (err) {
           const newError = err.message || 'Failed to load resume';
           setLastError(newError);
@@ -41,12 +41,13 @@ const Home = () => {
             toast.error('Having trouble loading your resume. Will retry...');
           }
 
+          // Retry logic with exponential backoff (1s, 2s, 4s)
           if (retryCount < 2) {
             const delay = Math.min(1000 * Math.pow(2, retryCount), 8000);
             const timer = setTimeout(() => {
               setRetryCount(prev => prev + 1);
             }, delay);
-            return () => clearTimeout(timer);
+            return () => clearTimeout(timer); // Clear timer if unmounted or re-run
           } else if (retryCount === 2) {
             toast.error('Failed to load resume after multiple attempts. Please check your connection and refresh the page.');
           }
@@ -57,6 +58,7 @@ const Home = () => {
     }
   }, [isAuthenticated, fetchResume, retryCount, lastError]);
 
+  // Loading screen with spinner and retry info
   if (!isAuthenticated || (loading && retryCount === 0)) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
@@ -68,6 +70,7 @@ const Home = () => {
     );
   }
 
+  // If all retries failed, show error screen with retry/refresh options
   if (lastError && retryCount >= 3) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
@@ -80,7 +83,7 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => {
-                setRetryCount(0);
+                setRetryCount(0); // Reset and try again
                 setLastError(null);
               }}
               className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded transition-colors"
@@ -99,25 +102,27 @@ const Home = () => {
     );
   }
 
+  // Main builder layout with form and live preview
   return (
     <div className="w-full flex flex-col overflow-hidden backdrop-blur-lg bg-white/20 border border-white/30 rounded-lg shadow-lg px-2 py-4 md:px-4 md:py-6 lg:px-6 lg:py-4 max-w-[1300px] mx-auto min-h-[100dvh]">
 
-
       <BuilderLayout
         form={
+          // Left side - builder form
           <div className="h-full w-full overflow-y-auto">
             <BuilderForm className="h-full" />
           </div>
         }
         preview={
+          // Right side - CV preview panel
           <div className="w-full h-fit flex flex-col bg-white rounded-lg shadow md:max-w-[540px] lg:max-w-[620px] mx-auto ">
 
-            {/* Top bar inside preview container */}
+            {/* Header inside the preview box */}
             <div className="p-4 md:p-2 lg:p-3 border-b border-gray-200">
               <h2 className="text-2xl md:text-[1.15rem] lg:text-[1.25rem] font-bold text-gray-800">Live Preview</h2>
             </div>
 
-            {/* CV Preview Container with fixed height */}
+            {/* CV preview itself, scaled for responsiveness */}
             <div className="w-full px-4 py-4 flex justify-center items-start max-h-[600px] sm:max-h-[400px] md:max-h-[500px] lg:max-h-[750px] xl:max-h-[900px] 2xl:max-h-[900px]">
               <div className="w-full max-w-[720px] scale-95 md:scale-100 lg:scale-[1.05] xl:scale-[1.05] 2xl:scale-[1.05] origin-top max-h-[600px] sm:max-h-[900px] md:max-h-[500px] lg:max-h-[750px] xl:max-h-[900px] 2xl:max-h-[850px]">
                 <CVPreview isPreview={true} />

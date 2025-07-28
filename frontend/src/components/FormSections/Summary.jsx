@@ -3,13 +3,17 @@ import useCVStore from '../../store/cvStore'
 
 const Summary = () => {
   const { summary, setSummary } = useCVStore()
+
+  // track character count for live update and limit check
   const [charCount, setCharCount] = useState(summary.length)
   const maxChars = 600
 
+  // update char count whenever summary changes
   useEffect(() => {
     setCharCount(summary.length)
   }, [summary])
 
+  // handle summary field changes with character limit
   const handleSummaryChange = (e) => {
     const newValue = e.target.value
     if (newValue.length <= maxChars) {
@@ -20,6 +24,7 @@ const Summary = () => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <div className="relative">
+        {/* summary input field */}
         <textarea
           value={summary}
           onChange={handleSummaryChange}
@@ -28,6 +33,8 @@ const Summary = () => {
           maxLength={maxChars}
           className={`w-full border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
         />
+        
+        {/* character counter display */}
         <div className="flex justify-end mt-1">
           <span className={`text-sm ${charCount === maxChars ? 'text-yellow-600 font-medium' : 'text-gray-500'}`}>
             {charCount}/{maxChars} characters

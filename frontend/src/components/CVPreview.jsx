@@ -16,6 +16,7 @@ const CVPreview = ({ isPreview = true, className }) => {
   const containerRef = useRef(null)
 
   useEffect(() => {
+    // adjust scale based on container size
     const calculateScale = () => {
       if (!containerRef.current) return
 
@@ -36,6 +37,7 @@ const CVPreview = ({ isPreview = true, className }) => {
     calculateScale()
     window.addEventListener('resize', calculateScale)
 
+    // recalculate on container resize
     const resizeObserver = new ResizeObserver(calculateScale)
     resizeObserver.observe(containerRef.current)
 
@@ -45,6 +47,7 @@ const CVPreview = ({ isPreview = true, className }) => {
     }
   }, [])
 
+  // shared styles for the CV container
   const cvStyles = {
     width: `${A4_WIDTH}px`,
     height: `${A4_HEIGHT}px`,
@@ -63,6 +66,7 @@ const CVPreview = ({ isPreview = true, className }) => {
     })
   }
 
+  // preview mode (responsive scaling)
   if (isPreview) {
     return (
       <div
@@ -86,6 +90,7 @@ const CVPreview = ({ isPreview = true, className }) => {
     )
   }
 
+  // static mode (PDF export or download)
   return (
     <div className={`flex justify-center items-center ${className || ''}`}>
       <div
