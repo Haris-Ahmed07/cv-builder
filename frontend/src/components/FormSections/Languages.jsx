@@ -2,18 +2,23 @@ import React, { useState } from 'react'
 import useCVStore from '../../store/cvStore'
 
 const Languages = () => {
+  // pulling language list and functions from global store
   const { languages, addLanguage, removeLanguage } = useCVStore()
+
+  // input state to track the current typed language
   const [input, setInput] = useState('')
 
+  // handle form submission
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!input.trim()) return
-    addLanguage(input.trim())
-    setInput('')
+    if (!input.trim()) return // skip if empty or just spaces
+    addLanguage(input.trim()) // add language to store
+    setInput('') // reset input field
   }
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
+      {/* language input form */}
       <form onSubmit={handleSubmit} className="flex gap-3">
         <input
           type="text"
@@ -33,6 +38,7 @@ const Languages = () => {
         </button>
       </form>
 
+      {/* render language chips */}
       <ul className="mt-4 flex flex-wrap gap-2">
         {languages.map((lang, idx) => (
           <li
@@ -40,6 +46,7 @@ const Languages = () => {
             className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-800 relative flex items-center"
           >
             {lang}
+            {/* remove button inside the tag */}
             <button
               onClick={() => removeLanguage(idx)}
               className="ml-2 text-red-500 text-xs hover:text-red-700 focus:outline-none"

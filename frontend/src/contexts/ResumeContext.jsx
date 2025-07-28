@@ -1,18 +1,20 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from './AuthContext';
 import useCVStore from '../store/cvStore';
+import { getEnv } from '../utils/env';
 
 const ResumeContext = createContext();
 
-// In-memory cache to store the current fetch promise
+// This holds the currently active fetch to prevent duplicate API calls
 let activeFetch = null;
 
-// Cleanup function to reset the active fetch
+// Reset the fetch tracker
 const cleanupFetch = () => {
   activeFetch = null;
 };
 
 export function ResumeProvider({ children }) {
+  // Default structure of the resume object
   const [resume, setResume] = useState({
     personalInfo: {},
     summary: '',
@@ -35,23 +37,23 @@ export function ResumeProvider({ children }) {
       'Languages'
     ]
   });
-  
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { token, logout } = useAuth();
-  const abortControllerRef = useRef(null);
-  const isMounted = useRef(true);
 
+  const [loading, setLoading] = useState(true); // Controls global loading state
+  const [error, setError] = useState(null); // Stores any errors from fetching
+  const { token, logout } = useAuth(); // Grab token and logout from auth context
+  const abortControllerRef = useRef(null); // Allows us to cancel requests
+  const isMounted = useRef(true); // Used to avoid setting state after unmount
+
+  // Core logic to fetch resume data from backend
   const fetchResume = useCallback(async (options = {}) => {
     const { force = false } = options;
-    
-    // If we already have a fetch in progress, return that promise
-    if (activeFetch && !force) {
 
+    // Prevent refetch if a fetch is already happening unless forced
+    if (activeFetch && !force) {
       return activeFetch;
     }
 
-    const currentToken = token; // Capture the current token value
+    const currentToken = token;
     if (!currentToken) {
       const error = new Error('No authentication token found');
       setError(error.message);
@@ -59,22 +61,22 @@ export function ResumeProvider({ children }) {
       throw error;
     }
 
-
     setLoading(true);
     setError(null);
 
-    // Create new AbortController for this request
+    // Abort previous fetch if any
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
+
+    // Create a new abort controller for this request
     abortControllerRef.current = new AbortController();
 
     const fetchPromise = (async () => {
       try {
         const startTime = Date.now();
-        const apiUrl = `${import.meta.env.VITE_BACKEND_API_BASE_URL}/resume`;
+        const apiUrl = `${getEnv('VITE_BACKEND_API_BASE_URL')}/resume`;
 
-        
         const response = await fetch(apiUrl, {
           headers: {
             'Authorization': `Bearer ${currentToken}`,
@@ -86,32 +88,21 @@ export function ResumeProvider({ children }) {
 
         const responseTime = Date.now() - startTime;
 
-
+        // Handle session expiration
         if (response.status === 401) {
-          // Token expired, log out
-
-          if (isMounted.current) {
-            logout();
-          }
+          if (isMounted.current) logout();
           throw new Error('Your session has expired. Please log in again.');
         }
 
-        if (response.status === 204) {
-
+        // Handle no content (empty resume)
+        if (response.status === 204 || response.status === 404) {
           if (isMounted.current) {
-            setResume(prev => ({ ...prev })); // Keep existing structure but trigger update
+            setResume(prev => ({ ...prev }));
           }
           return null;
         }
 
-        if (response.status === 404) {
-
-          if (isMounted.current) {
-            setResume(prev => ({ ...prev })); // Keep existing structure but trigger update
-          }
-          return null;
-        }
-
+        // Any other failed response
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           const errorMessage = errorData.message || response.statusText;
@@ -120,31 +111,28 @@ export function ResumeProvider({ children }) {
 
         const data = await response.json();
 
-        
+        // On success, update both local and global (store) state
         if (isMounted.current) {
           const resumeData = data.data || data;
+
           setResume(prev => ({
             ...prev,
             ...resumeData
           }));
-          
-          // Update CV store with the fetched resume data
+
           const { updateCVStore } = useCVStore.getState();
           updateCVStore(resumeData);
         }
-        
+
         return data.data || data;
       } catch (err) {
-        // Don't set error for aborted requests
-        if (err.name !== 'AbortError') {
-
-          if (isMounted.current) {
-            setError(err.message || 'Failed to fetch resume data');
-          }
+        // Ignore abort errors
+        if (err.name !== 'AbortError' && isMounted.current) {
+          setError(err.message || 'Failed to fetch resume data');
         }
         throw err;
       } finally {
-        // Only clear loading state if this is the most recent request
+        // Only clear loading if this is the latest fetch
         if (activeFetch === fetchPromise && isMounted.current) {
           setLoading(false);
           cleanupFetch();
@@ -152,12 +140,11 @@ export function ResumeProvider({ children }) {
       }
     })();
 
-    // Store the fetch promise
     activeFetch = fetchPromise;
     return fetchPromise;
   }, [token, logout]);
 
-  // Cleanup on unmount
+  // Cleanup when provider unmounts
   useEffect(() => {
     return () => {
       isMounted.current = false;
@@ -168,14 +155,15 @@ export function ResumeProvider({ children }) {
     };
   }, []);
 
-  // Function to update the CV store with resume data
+  // Helper to update global CV store from resume data
   const updateCVStoreWithResumeData = useCallback((resumeData) => {
     if (!resumeData) return;
-    
+
     console.log('Updating CV store with resume data:', resumeData);
+
     const { updateCVStore } = useCVStore.getState();
-    
-    // Ensure all arrays are properly initialized
+
+    // Normalize missing arrays to empty arrays to avoid frontend crashes
     const processedData = {
       ...resumeData,
       education: Array.isArray(resumeData.education) ? resumeData.education : [],
@@ -186,11 +174,11 @@ export function ResumeProvider({ children }) {
       certifications: Array.isArray(resumeData.certifications) ? resumeData.certifications : [],
       languages: Array.isArray(resumeData.languages) ? resumeData.languages : [],
     };
-    
+
     updateCVStore(processedData);
   }, []);
 
-  // Initial fetch when component mounts or token changes
+  // Fetch resume once on mount or when token changes
   useEffect(() => {
     if (!token) {
       setLoading(false);
@@ -215,6 +203,7 @@ export function ResumeProvider({ children }) {
     loadResume();
   }, [token, fetchResume, updateCVStoreWithResumeData]);
 
+  // Expose everything needed via context
   const value = {
     resume,
     loading,
@@ -229,6 +218,7 @@ export function ResumeProvider({ children }) {
   );
 }
 
+// Hook to use resume context in any component
 export function useResume() {
   const context = useContext(ResumeContext);
   if (context === undefined) {

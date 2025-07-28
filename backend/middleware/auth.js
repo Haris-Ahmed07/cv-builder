@@ -1,25 +1,24 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-import ErrorResponse from '../utils/errorResponse.js';
 
-// Protect routes
+// Middleware to protect routes - checks for valid JWT token
 export const protect = async (req, res, next) => {
   let token;
 
-  // Check for token in headers
+  // Check for token in Authorization header (Bearer)
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
-    // Set token from Bearer token in header
+    // Extract token from header
     token = req.headers.authorization.split(' ')[1];
   }
-  // Set token from cookie
+  // Or check for token in cookies
   else if (req.cookies.token) {
     token = req.cookies.token;
   }
 
-  // Make sure token exists
+  // If no token, deny access
   if (!token) {
     return res.status(401).json({
       success: false,
@@ -28,13 +27,14 @@ export const protect = async (req, res, next) => {
   }
 
   try {
-    // Verify token
+    // Verify token and decode payload
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Add user from payload
+    // Attach user info to request (excluding password)
     req.user = await User.findById(decoded.id).select('-password');
     next();
   } catch (err) {
+    // Token invalid or expired
     console.error('Auth middleware error:', err);
     return res.status(401).json({
       success: false,
@@ -43,9 +43,10 @@ export const protect = async (req, res, next) => {
   }
 };
 
-// Grant access to specific roles
+// Middleware to grant access only to specific user roles
 export const authorize = (...roles) => {
   return (req, res, next) => {
+    // Check if user's role is allowed
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,

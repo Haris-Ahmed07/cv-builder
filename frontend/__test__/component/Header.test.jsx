@@ -37,7 +37,9 @@ describe('Header Component', () => {
     fireEvent.click(profileBtn)
     expect(screen.getByText('Sign out')).toBeInTheDocument()
 
-    fireEvent.click(screen.getByTestId('backdrop'))
+    // Try to select the backdrop by class name since data-testid is not present
+    const backdrop = document.querySelector('.fixed.inset-0.z-40');
+    fireEvent.click(backdrop);
 
     expect(screen.queryByText('Sign out')).not.toBeInTheDocument()
   })

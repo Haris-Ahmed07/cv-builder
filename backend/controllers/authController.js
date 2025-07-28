@@ -1,15 +1,13 @@
-import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-import ErrorResponse from '../utils/errorResponse.js';
 
-// @desc    Register a new user
-// @route   POST /api/auth/signup
-// @access  Public
+// Register a new user (signup)
+// Route: POST /api/auth/signup
+// Public access
 export const signupUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
-    // Check if user already exists
+    // Check if the user already exists by email
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ 
@@ -18,17 +16,17 @@ export const signupUser = async (req, res, next) => {
       });
     }
 
-    // Create user
+    // Create a new user
     const user = await User.create({
       name,
       email,
       password
     });
 
-    // Create token
+    // Generate JWT token for the new user
     const token = user.getSignedJwtToken();
 
-    // Create response object without password
+    // Prepare user data to return (no password)
     const userResponse = {
       id: user._id,
       name: user.name,
@@ -36,12 +34,14 @@ export const signupUser = async (req, res, next) => {
       createdAt: user.createdAt
     };
 
+    // Send success response with token and user info
     res.status(201).json({
       success: true,
       token,
       user: userResponse
     });
   } catch (error) {
+    // Handle signup errors
     console.error('Signup error:', error);
     res.status(500).json({
       success: false,
@@ -51,13 +51,12 @@ export const signupUser = async (req, res, next) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/signin
-// @access  Public
+// Login an existing user (signin)
+// Route: POST /api/auth/signin
+// Public access
 export const signinUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
     // Validate email & password
     if (!email || !password) {
       return res.status(400).json({
@@ -110,9 +109,9 @@ export const signinUser = async (req, res, next) => {
   }
 };
 
-// @desc    Get current logged in user
-// @route   GET /api/auth/me
-// @access  Private
+// Get current logged in user (me)
+// Route: GET /api/auth/me
+// Private access
 export const getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id).select('-password');

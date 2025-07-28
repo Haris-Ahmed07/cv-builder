@@ -1,15 +1,15 @@
-import React from 'react';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { A4_WIDTH, A4_HEIGHT, PDF_PADDING, PDF_CONTENT_WIDTH } from '../constants/cvDimensions';
+import React from 'react'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
+import { A4_WIDTH, A4_HEIGHT, PDF_PADDING, PDF_CONTENT_WIDTH } from '../constants/cvDimensions'
 
 const DownloadButton = ({ className = '' }) => {
   const handleDownload = async () => {
-    const cv = document.getElementById('cv-preview');
-    if (!cv) return;
+    const cv = document.getElementById('cv-preview')
+    if (!cv) return
 
     try {
-      // Store original styles
+      // save the current styles to restore later
       const originalStyles = {
         overflow: cv.style.overflow,
         transform: cv.style.transform,
@@ -19,19 +19,19 @@ const DownloadButton = ({ className = '' }) => {
         display: cv.style.display,
         padding: cv.style.padding,
         margin: cv.style.margin,
-      };
+      }
 
-      // Set styles for clean capture
-      cv.style.overflow = 'visible';
-      cv.style.transform = 'none';
-      cv.style.border = 'none';
-      cv.style.width = `${A4_WIDTH}px`;
-      cv.style.maxWidth = `${A4_WIDTH}px`;
-      cv.style.display = 'block';
-      cv.style.padding = PDF_PADDING;
-      cv.style.margin = '0px';
+      // apply temporary clean styles for a good capture
+      cv.style.overflow = 'visible'
+      cv.style.transform = 'none'
+      cv.style.border = 'none'
+      cv.style.width = `${A4_WIDTH}px`
+      cv.style.maxWidth = `${A4_WIDTH}px`
+      cv.style.display = 'block'
+      cv.style.padding = PDF_PADDING
+      cv.style.margin = '0px'
 
-      // Convert the CV to a canvas
+      // capture the element as canvas
       const canvas = await html2canvas(cv, {
         backgroundColor: '#ffffff',
         useCORS: true,
@@ -44,62 +44,62 @@ const DownloadButton = ({ className = '' }) => {
         imageTimeout: 0,
         removeContainer: true,
         onclone: (clonedDoc) => {
-          const clonedCV = clonedDoc.getElementById('cv-preview');
+          // ensure cloned element also looks clean
+          const clonedCV = clonedDoc.getElementById('cv-preview')
           if (clonedCV) {
-            clonedCV.style.transform = 'none';
-            clonedCV.style.width = `${A4_WIDTH}px`;
-            clonedCV.style.maxWidth = `${A4_WIDTH}px`;
-            clonedCV.style.minWidth = `${A4_WIDTH}px`;
-            clonedCV.style.display = 'block';
-            clonedCV.style.padding = PDF_PADDING;
-            clonedCV.style.margin = '0px';
-            clonedCV.style.boxSizing = 'border-box';
-            // Reset all margins and paddings for child elements
-            const allElements = clonedDoc.querySelectorAll('div, p, span, h1, h2, ul, li, a');
+            clonedCV.style.transform = 'none'
+            clonedCV.style.width = `${A4_WIDTH}px`
+            clonedCV.style.maxWidth = `${A4_WIDTH}px`
+            clonedCV.style.minWidth = `${A4_WIDTH}px`
+            clonedCV.style.display = 'block'
+            clonedCV.style.padding = PDF_PADDING
+            clonedCV.style.margin = '0px'
+            clonedCV.style.boxSizing = 'border-box'
+
+            // remove any extra paddings/margins from inside
+            const allElements = clonedDoc.querySelectorAll('div, p, span, h1, h2, ul, li, a')
             allElements.forEach((el) => {
-              el.style.margin = '0px';
-              el.style.paddingLeft = '0px';
-              el.style.paddingRight = '0px';
-              el.style.boxSizing = 'border-box';
-            });
+              el.style.margin = '0px'
+              el.style.paddingLeft = '0px'
+              el.style.paddingRight = '0px'
+              el.style.boxSizing = 'border-box'
+            })
           }
         },
-      });
+      })
 
-      // Log canvas size for debugging
-      console.log('Canvas size:', canvas.width, 'x', canvas.height);
+      console.log('Canvas size:', canvas.width, 'x', canvas.height)
 
-      // Restore original styles
-      cv.style.overflow = originalStyles.overflow;
-      cv.style.transform = originalStyles.transform;
-      cv.style.border = originalStyles.border;
-      cv.style.width = originalStyles.width;
-      cv.style.maxWidth = originalStyles.maxWidth;
-      cv.style.display = originalStyles.display;
-      cv.style.padding = originalStyles.padding;
-      cv.style.margin = originalStyles.margin;
+      // revert all styles back to how they were
+      cv.style.overflow = originalStyles.overflow
+      cv.style.transform = originalStyles.transform
+      cv.style.border = originalStyles.border
+      cv.style.width = originalStyles.width
+      cv.style.maxWidth = originalStyles.maxWidth
+      cv.style.display = originalStyles.display
+      cv.style.padding = originalStyles.padding
+      cv.style.margin = originalStyles.margin
 
-      // Create PDF with A4 dimensions
+      // create PDF
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'px',
         format: [A4_WIDTH, A4_HEIGHT],
-      });
+      })
 
-      // Convert canvas to image
-      const imgData = canvas.toDataURL('image/jpeg', 0.8);
+      const imgData = canvas.toDataURL('image/jpeg', 0.8)
 
-      // Add image to PDF with equal margins
-      pdf.addImage(imgData, 'JPEG', 20, 20, PDF_CONTENT_WIDTH, A4_HEIGHT - 40, undefined, 'FAST');
+      // draw the image on the pdf with some padding
+      pdf.addImage(imgData, 'JPEG', 20, 20, PDF_CONTENT_WIDTH, A4_HEIGHT - 40, undefined, 'FAST')
 
-      // Optimize and save PDF
-      pdf.setCreationDate(new Date());
-      pdf.setLanguage('en-US');
-      pdf.save('cv.pdf');
+      // set extra metadata and save
+      pdf.setCreationDate(new Date())
+      pdf.setLanguage('en-US')
+      pdf.save('cv.pdf')
     } catch (err) {
-      console.error('Download error:', err);
+      console.error('Download error:', err)
     }
-  };
+  }
 
   return (
     <button
@@ -119,7 +119,7 @@ const DownloadButton = ({ className = '' }) => {
     >
       <span className="whitespace-nowrap">Download CV</span>
     </button>
-  );
-};
+  )
+}
 
-export default DownloadButton;
+export default DownloadButton

@@ -1,9 +1,10 @@
-import React from 'react';
-import useCVStore from '../store/cvStore';
-import { CV_FONT_FAMILY, CV_BASE_FONT_SIZE } from '../constants/cvDimensions';
+import React from 'react'
+import useCVStore from '../store/cvStore'
+import { CV_FONT_FAMILY, CV_BASE_FONT_SIZE } from '../constants/cvDimensions'
 
-const baseTextClass = `text-[${CV_BASE_FONT_SIZE}] text-black font-[${CV_FONT_FAMILY}] leading-tight`;
-const headingClass = `text-[${CV_BASE_FONT_SIZE}] font-semibold uppercase tracking-wide text-black border-b border-black pb-2 mb-1`;
+// base styles for text and headings
+const baseTextClass = `text-[${CV_BASE_FONT_SIZE}] text-black font-[${CV_FONT_FAMILY}] leading-tight`
+const headingClass = `text-[${CV_BASE_FONT_SIZE}] font-semibold uppercase tracking-wide text-black border-b border-black pb-2 mb-1`
 
 const CVSections = () => {
   const {
@@ -17,8 +18,9 @@ const CVSections = () => {
     certifications,
     summary,
     languages,
-  } = useCVStore();
+  } = useCVStore()
 
+  // each section render function is mapped here
   const sectionRenderMap = {
     PersonalInfo: () => (
       <div className="mb-2 text-center">
@@ -27,10 +29,17 @@ const CVSections = () => {
             {personalInfo.name}
           </h1>
         )}
-        <p className={baseTextClass + ' mt-0.5'}>{[personalInfo.email, personalInfo.phone].filter(Boolean).join(' | ')}</p>
-        <p className={baseTextClass}>{[personalInfo.address, personalInfo.linkedin, personalInfo.github].filter(Boolean).join(' | ')}</p>
+        {/* contact info line 1 */}
+        <p className={baseTextClass + ' mt-0.5'}>
+          {[personalInfo.email, personalInfo.phone].filter(Boolean).join(' | ')}
+        </p>
+        {/* contact info line 2 */}
+        <p className={baseTextClass}>
+          {[personalInfo.address, personalInfo.linkedin, personalInfo.github].filter(Boolean).join(' | ')}
+        </p>
       </div>
     ),
+
     Summary: () =>
       summary && (
         <div className="mb-2 text-left">
@@ -38,16 +47,19 @@ const CVSections = () => {
           <p className={baseTextClass}>{summary}</p>
         </div>
       ),
+
     Education: () =>
       education.length > 0 && (
         <div className="mb-2 text-left">
           <h2 className={headingClass}>Education</h2>
           {education.map((edu, index) => (
             <div key={index} className="mb-1">
+              {/* degree and date */}
               <div className="flex justify-between items-center mb-1">
                 <p className={baseTextClass + ' font-bold'}>{edu.degree}</p>
                 <span className={baseTextClass}>{edu.startDate} – {edu.endDate}</span>
               </div>
+              {/* school name, field, GPA, optional desc */}
               <p className={baseTextClass + ' mb-0.5'}>{edu.school}</p>
               {edu.field && <p className={baseTextClass + ' mb-0.5'}>{edu.field}</p>}
               {edu.grade && <p className={baseTextClass + ' mb-0.5'}>GPA: {edu.grade}</p>}
@@ -56,12 +68,14 @@ const CVSections = () => {
           ))}
         </div>
       ),
+
     Work: () =>
       workExperience.length > 0 && (
         <div className="mb-2 text-left">
           <h2 className={headingClass}>Work Experience</h2>
           {workExperience.map((work, index) => (
             <div key={index} className="mb-1">
+              {/* job title and dates */}
               <div className="flex justify-between items-center mb-1">
                 <p className={baseTextClass + ' font-bold'}>{work.title}</p>
                 <span className={baseTextClass}>{work.startDate} – {work.endDate}</span>
@@ -72,6 +86,7 @@ const CVSections = () => {
           ))}
         </div>
       ),
+
     Skills: () =>
       skills.length > 0 && (
         <div className="mb-2 text-left">
@@ -79,6 +94,7 @@ const CVSections = () => {
           <p className={baseTextClass}>{skills.join(' | ')}</p>
         </div>
       ),
+
     Achievements: () =>
       achievements.length > 0 && (
         <div className="mb-2 text-left">
@@ -90,6 +106,7 @@ const CVSections = () => {
           </ul>
         </div>
       ),
+
     Projects: () =>
       projects.length > 0 && (
         <div className="mb-2 text-left">
@@ -97,23 +114,21 @@ const CVSections = () => {
           {projects.map((proj, idx) => (
             <div key={idx} className="mb-1">
               <p className={baseTextClass + ' font-bold mb-0.5'}>{proj.title}</p>
-              {proj.techStack && (
-                <p className={baseTextClass + ' italic mb-0.5'}>{proj.techStack}</p>
-              )}
+              {proj.techStack && <p className={baseTextClass + ' italic mb-0.5'}>{proj.techStack}</p>}
               <p className={baseTextClass + ' mb-0.5'}>{proj.description}</p>
-              {proj.link && (
-                <a href={proj.link} className={baseTextClass + ' underline mb-0.5'}>{proj.link}</a>
-              )}
+              {proj.link && <a href={proj.link} className={baseTextClass + ' underline mb-0.5'}>{proj.link}</a>}
             </div>
           ))}
         </div>
       ),
+
     Certifications: () =>
       certifications.length > 0 && (
         <div className="mb-2 text-left">
           <h2 className={headingClass}>Certifications</h2>
           {certifications.map((cert, idx) => (
             <div key={idx} className="mb-1">
+              {/* cert name and date */}
               <div className="flex justify-between items-center mb-1">
                 <p className={baseTextClass + ' font-bold'}>{cert.name}</p>
                 {cert.date && <span className={baseTextClass}>{cert.date}</span>}
@@ -123,6 +138,7 @@ const CVSections = () => {
           ))}
         </div>
       ),
+
     Languages: () =>
       languages.length > 0 && (
         <div className="mb-2 text-left">
@@ -130,15 +146,16 @@ const CVSections = () => {
           <p className={baseTextClass}>{languages.join(' | ')}</p>
         </div>
       ),
-  };
+  }
 
   return (
     <>
+      {/* render sections based on selected order */}
       {sectionOrder.map((id) => (
         <React.Fragment key={id}>{sectionRenderMap[id]?.()}</React.Fragment>
       ))}
     </>
-  );
-};
+  )
+}
 
-export default CVSections;
+export default CVSections

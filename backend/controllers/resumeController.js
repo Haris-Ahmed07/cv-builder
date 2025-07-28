@@ -1,15 +1,15 @@
 import Resume from '../models/Resume.js';
-import ErrorResponse from '../utils/errorResponse.js';
 
-// @desc    Get user's resume
-// @route   GET /api/resume
-// @access  Private
+// Get the current user's resume
+// Route: GET /api/resume
+// Private access
 export const getResume = async (req, res, next) => {
   try {
+    // Find resume by user ID
     const resume = await Resume.findOne({ user: req.user.id });
 
     if (!resume) {
-      // Return default empty resume structure if none exists
+      // If no resume exists, return a default empty resume structure
       return res.status(200).json({
         success: true,
         data: {
@@ -37,27 +37,31 @@ export const getResume = async (req, res, next) => {
       });
     }
 
+    // Resume found, return it
     res.status(200).json({
       success: true,
       data: resume
     });
   } catch (error) {
+    // Pass errors to error handler
     next(error);
   }
 };
 
-// @desc    Create or update user's resume
-// @route   POST /api/resume
-// @access  Private
+// Create or update the user's resume
+// Route: POST /api/resume
+// Private access
 export const saveResume = async (req, res, next) => {
   try {
+    // Merge request body with user ID
     const resumeData = {
       ...req.body,
       user: req.user.id
     };
 
+    // Check if resume already exists for user
     let resume = await Resume.findOne({ user: req.user.id });
-
+    // ... rest of function unchanged
     if (resume) {
       // Overwrite arrays and objects, do not merge arrays (prevents duplicates)
       Object.keys(req.body).forEach(key => {

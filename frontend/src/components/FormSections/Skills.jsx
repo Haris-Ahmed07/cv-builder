@@ -3,17 +3,21 @@ import useCVStore from '../../store/cvStore'
 
 const Skills = () => {
   const { skills, addSkill, removeSkill } = useCVStore()
+
+  // local state to handle skill input field
   const [skillInput, setSkillInput] = useState('')
 
+  // add skill to store when form is submitted
   const handleAdd = (e) => {
     e.preventDefault()
-    if (!skillInput.trim()) return
+    if (!skillInput.trim()) return // prevent empty submissions
     addSkill(skillInput.trim())
-    setSkillInput('')
+    setSkillInput('') // clear input after adding
   }
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
+      {/* skill input form */}
       <form onSubmit={handleAdd} className="flex gap-4">
         <input
           type="text"
@@ -33,13 +37,17 @@ const Skills = () => {
         </button>
       </form>
 
+      {/* display all added skills */}
       <div className="mt-4 flex flex-wrap gap-2">
         {skills.map((skill, idx) => (
           <div
             key={idx}
             className="bg-gray-100 px-3 py-1 rounded-full flex items-center"
           >
+            {/* show skill name */}
             <span className="mr-2">{skill}</span>
+
+            {/* remove skill button */}
             <button
               onClick={() => removeSkill(idx)}
               className="text-red-500 text-xs hover:text-red-700 focus:outline-none"

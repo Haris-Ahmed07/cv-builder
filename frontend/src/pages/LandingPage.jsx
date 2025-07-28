@@ -6,28 +6,37 @@ const Landing = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
+  // If user is already logged in, send them straight to /home
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/home');
     }
   }, [isAuthenticated, navigate]);
 
+  // If already authenticated, don’t show the landing page at all
   if (isAuthenticated) return null;
 
   return (
+    // Background and outer container
     <div className="bg-[url('/bg-pattern.png')] bg-cover bg-no-repeat bg-center flex flex-col min-h-content ">
+
+      {/* Main section */}
       <main className="flex-1 flex flex-col justify-start items-center text-center px-4 py-6 sm:py-8 lg:py-12">
         <div className="backdrop-blur-xl bg-white/30 border border-white/20 shadow-2xl rounded-3xl p-6 sm:p-8 lg:p-10 w-full max-w-4xl">
+
+          {/* Headline */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight">
             Create Professional CVs
             <span className="text-indigo-600 block">Effortlessly</span>
           </h1>
 
+          {/* Subheading */}
           <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
             Build modern, clean, and ATS-friendly resumes in minutes. No design skills needed.
             Live preview and instant PDF download.
           </p>
 
+          {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12">
             <Link
               to="/signup"
@@ -43,7 +52,10 @@ const Landing = () => {
             </Link>
           </div>
 
+          {/* Feature cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-10">
+
+            {/* Feature 1 */}
             <div className="text-center">
               <div className="bg-indigo-100 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,6 +66,7 @@ const Landing = () => {
               <p className="text-gray-600 text-sm sm:text-base">Create your CV in minutes with our intuitive builder</p>
             </div>
 
+            {/* Feature 2 */}
             <div className="text-center">
               <div className="bg-indigo-100 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,6 +77,7 @@ const Landing = () => {
               <p className="text-gray-600 text-sm sm:text-base">Optimized for applicant tracking systems</p>
             </div>
 
+            {/* Feature 3 */}
             <div className="text-center">
               <div className="bg-indigo-100 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,12 +1,15 @@
 import mongoose from 'mongoose';
 
+// Define the schema for a user's resume
 const resumeSchema = new mongoose.Schema({
+  // Reference to the user who owns this resume
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
     unique: true
   },
+  // Personal information section
   personalInfo: {
     name: String,
     email: String,
@@ -15,7 +18,9 @@ const resumeSchema = new mongoose.Schema({
     linkedin: String,
     github: String,
   },
+  // Professional summary or objective
   summary: String,
+  // Education history (array of schools/degrees)
   education: [{
     degree: String,
     school: String,
@@ -25,6 +30,7 @@ const resumeSchema = new mongoose.Schema({
     grade: String,
     description: String
   }],
+  // Work experience (array of jobs)
   workExperience: [{
     title: String,
     company: String,
@@ -32,20 +38,26 @@ const resumeSchema = new mongoose.Schema({
     endDate: String,
     description: String
   }],
+  // List of skills
   skills: [String],
+  // List of achievements
   achievements: [String],
+  // Projects (array of project details)
   projects: [{
     title: String,
     techStack: String,
     description: String,
     link: String
   }],
+  // Certifications (array of certifications)
   certifications: [{
     name: String,
     issuer: String,
     date: String
   }],
+  // Languages spoken
   languages: [String],
+  // Order in which sections appear on the resume
   sectionOrder: {
     type: [String],
     default: [
@@ -60,6 +72,7 @@ const resumeSchema = new mongoose.Schema({
       'Languages'
     ]
   },
+  // Timestamps
   createdAt: {
     type: Date,
     default: Date.now
@@ -69,7 +82,7 @@ const resumeSchema = new mongoose.Schema({
     default: Date.now
   }
 }, {
-  timestamps: true
+  timestamps: true // Automatically manage createdAt and updatedAt
 });
 
 // Update the updatedAt field before saving

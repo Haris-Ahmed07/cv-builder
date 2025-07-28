@@ -51,7 +51,7 @@ describe('SaveButton', () => {
 
   it('renders the button with default text', () => {
     render(<SaveButton />)
-    expect(screen.getByText('Save Resume')).toBeInTheDocument()
+    expect(screen.getByText('Save CV')).toBeInTheDocument()
   })
 
   it('calls fetch and shows success toast on successful save', async () => {
@@ -61,7 +61,7 @@ describe('SaveButton', () => {
     })
 
     render(<SaveButton />)
-    fireEvent.click(screen.getByText('Save Resume'))
+    fireEvent.click(screen.getByText('Save CV'))
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
@@ -86,7 +86,7 @@ describe('SaveButton', () => {
     })
 
     render(<SaveButton />)
-    fireEvent.click(screen.getByText('Save Resume'))
+    fireEvent.click(screen.getByText('Save CV'))
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith('Error saving')

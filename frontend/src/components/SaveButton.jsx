@@ -11,7 +11,7 @@ const SaveButton = ({ className = '', children = 'Save CV' }) => {
     try {
       setIsSaving(true);
 
-      // Get the current state from the store
+      // Grab the current state of the CV from Zustand store
       const state = useCVStore.getState();
       const cvData = {
         personalInfo: state.personalInfo,
@@ -26,7 +26,7 @@ const SaveButton = ({ className = '', children = 'Save CV' }) => {
         sectionOrder: state.sectionOrder,
       };
 
-      // Send the resume data to the backend
+      // Send a POST request to backend to save the resume
       const response = await fetch(`${getEnv('VITE_BACKEND_API_BASE_URL')}/resume`, {
         method: 'POST',
         headers: {
@@ -36,16 +36,20 @@ const SaveButton = ({ className = '', children = 'Save CV' }) => {
         body: JSON.stringify(cvData)
       });
 
+      // If failed, show error message
       if (!response.ok) {
         const error = await response.text();
         throw new Error(error || 'Failed to save resume');
       }
 
-      await response.json(); // Parse the response
+      // Success
+      await response.json();
       toast.success('Resume saved successfully!');
     } catch (error) {
+      // Handle and show any error to the user
       toast.error(error.message || 'Failed to save CV. Please try again.');
     } finally {
+      // Always reset saving state
       setIsSaving(false);
     }
   };
@@ -68,6 +72,7 @@ const SaveButton = ({ className = '', children = 'Save CV' }) => {
       `}
     >
       {isSaving ? (
+        // Show loading spinner while saving
         <>
           <svg className="animate-spin -ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -76,6 +81,7 @@ const SaveButton = ({ className = '', children = 'Save CV' }) => {
           <span className="whitespace-nowrap text-sm sm:text-base">Saving...</span>
         </>
       ) : (
+        // Default button text
         <span className="whitespace-nowrap text-sm sm:text-base">{children}</span>
       )}
     </button>
