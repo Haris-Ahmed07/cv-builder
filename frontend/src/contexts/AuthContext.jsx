@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getEnv } from '../utils/env';
 
 const AuthContext = createContext(null);
 
@@ -18,7 +19,8 @@ export const AuthProvider = ({ children }) => {
 
     try {
 
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/auth/me`, {
+      // Use env helper for Jest/Vite compatibility
+      const response = await fetch(`${getEnv('VITE_BACKEND_API_BASE_URL')}/auth/me`, {
         headers: {
           'Authorization': `Bearer ${storedToken}`,
           'Content-Type': 'application/json'
@@ -54,6 +56,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
   useEffect(() => {
     let isMounted = true;
     
@@ -83,11 +86,13 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
+
     initializeAuth();
     
     return () => {
       isMounted = false;
     };
+
   }, []);
 
   const login = (responseData) => {
@@ -99,6 +104,7 @@ export const AuthProvider = ({ children }) => {
     navigate('/home');
   };
 
+
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -106,6 +112,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     navigate('/signin');
   };
+
 
   const value = {
     user,
@@ -117,8 +124,10 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!token,
   };
 
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -127,3 +136,6 @@ export const useAuth = () => {
   }
   return context;
 };
+
+export { AuthContext };
+

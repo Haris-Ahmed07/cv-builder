@@ -8,3 +8,25 @@ dist
 .env.test.local
 .env.production.local
 
+# Coverage reports
+coverage/
+lcov-report/
+*.lcov
+
+# Environment files
+.env*
+!.env.example
+
+# Logs
+*.log
+
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+
+# Test output
+*.test.js.snap
+
+# IDEs
+.vscode/
+.idea/
