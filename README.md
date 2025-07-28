@@ -135,7 +135,7 @@ Create a `.env` file in the `backend/` directory:
 ```env
 NODE_ENV=development
 PORT=5000
-MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/cv-builder?retryWrites=true&w=majority
+MONGO_URI="mongodb+srv://<username>:<password>@fyp.ipn3b.mongodb.net/" # MongoDB connection string
 JWT_SECRET=your_super_secret_jwt_key_here
 JWT_EXPIRE=30d
 FRONTEND_URL=http://localhost:5173

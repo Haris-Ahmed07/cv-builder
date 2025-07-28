@@ -117,7 +117,7 @@ Create a `.env` file in the backend root with the following variables:
 ```
 NODE_ENV=development           # Environment: development, production, or test
 PORT=5000                     # Port for backend server
-MONGO_URI="mongodb+srv://<username>:<password>@fyp.ipn3b.mongodb.net/cv-builder?retryWrites=true&w=majority&appName=FYP" # MongoDB connection string
+MONGO_URI="mongodb+srv://<username>:<password>@fyp.ipn3b.mongodb.net/" # MongoDB connection string
 JWT_SECRET=your_jwt_secret    # Secret for signing JWT tokens
 JWT_EXPIRE=30d                # JWT token expiration (e.g., 30d, 1h)
 FRONTEND_URL=http://localhost:5173 # Frontend URL for CORS
