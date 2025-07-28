@@ -13,32 +13,37 @@ const Languages = () => {
   }
 
   return (
-    <div className="bg-white p-6 rounded shadow-md mb-6">
-      {/* Input form */}
+    <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       <form onSubmit={handleSubmit} className="flex gap-3">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Enter a language"
-          className="border border-gray-300 rounded px-3 py-2 w-full"
+          placeholder="Enter a language *"
+          className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          maxLength={30}
+          required
         />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={!input.trim()}
+        >
           Add
         </button>
       </form>
 
-      {/* Show added languages */}
       <ul className="mt-4 flex flex-wrap gap-2">
         {languages.map((lang, idx) => (
           <li
             key={idx}
-            className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-800 relative"
+            className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-800 relative flex items-center"
           >
             {lang}
             <button
               onClick={() => removeLanguage(idx)}
-              className="ml-2 text-red-500 text-xs"
+              className="ml-2 text-red-500 text-xs hover:text-red-700 focus:outline-none"
+              aria-label={`Remove language ${lang}`}
             >
               ✕
             </button>
