@@ -118,8 +118,8 @@ const Home = () => {
             </div>
 
             {/* CV Preview Container with fixed height */}
-            <div className="w-full px-4 py-4 flex justify-center items-start max-h-[700px] sm:max-h-[900px] md:max-h-[600px] lg:max-h-[750px] xl:max-h-[950px] 2xl:max-h-[940px]">
-              <div className="w-full max-w-[720px] scale-95 md:scale-100 lg:scale-[1.05] xl:scale-[1.05] 2xl:scale-[1.05] origin-top max-h-[700px] sm:max-h-[900px] md:max-h-[600px] lg:max-h-[750px] xl:max-h-[900px] 2xl:max-h-[850px]">
+            <div className="w-full px-4 py-4 flex justify-center items-start max-h-[600px] sm:max-h-[400px] md:max-h-[500px] lg:max-h-[750px] xl:max-h-[900px] 2xl:max-h-[900px]">
+              <div className="w-full max-w-[720px] scale-95 md:scale-100 lg:scale-[1.05] xl:scale-[1.05] 2xl:scale-[1.05] origin-top max-h-[600px] sm:max-h-[900px] md:max-h-[500px] lg:max-h-[750px] xl:max-h-[900px] 2xl:max-h-[850px]">
                 <CVPreview isPreview={true} />
               </div>
             </div>
