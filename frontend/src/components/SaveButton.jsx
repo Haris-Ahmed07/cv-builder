@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import useCVStore from '../store/cvStore';
 import { authHeader } from '../utils/api';
+import { getEnv } from '../utils/env';
 
 const SaveButton = ({ className = '', children = 'Save Resume' }) => {
   const [isSaving, setIsSaving] = useState(false);
@@ -26,7 +27,7 @@ const SaveButton = ({ className = '', children = 'Save Resume' }) => {
       };
 
       // Send the resume data to the backend
-      const response = await fetch('http://localhost:5000/api/resume', {
+      const response = await fetch(`${getEnv('VITE_BACKEND_API_BASE_URL')}/resume`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "set NODE_ENV=test && jest --config=jest.config.js --env=jsdom --silent",
+    "test:debug": "set NODE_ENV=test && jest --config=jest.config.js --env=jsdom --debug",
+    "test:watch": "set NODE_ENV=test && jest --watch --config=jest.config.js --env=jsdom",
+    "test:coverage": "set NODE_ENV=test && jest --coverage --config=jest.config.js --env=jsdom",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -32,20 +36,29 @@
     "zustand": "^5.0.6"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-react": "^7.27.1",
     "@eslint/js": "^9.30.1",
     "@tailwindcss/postcss": "^4.1.11",
-    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "autoprefixer": "^10.4.21",
+    "babel-jest": "^30.0.5",
+    "dotenv": "^17.2.1",
     "eslint": "^9.30.1",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "util": "^0.12.5"
   }
 }

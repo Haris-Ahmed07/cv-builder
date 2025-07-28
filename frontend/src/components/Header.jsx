@@ -41,7 +41,7 @@ const Header = () => {
 
                 {isProfileOpen && (
                   <>
-                    <div className="fixed inset-0 z-40" onClick={() => setIsProfileOpen(false)}></div>
+                    <div data-testid="backdrop" className="fixed inset-0 z-40" onClick={() => setIsProfileOpen(false)}></div>
                     <div className="absolute right-0 top-full mt-2 w-40 sm:w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                       <button
                         onClick={() => {

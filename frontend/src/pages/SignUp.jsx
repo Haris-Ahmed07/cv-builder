@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { getEnv } from '../utils/env'
 
 const SignUp = () => {
   const [email, setEmail] = useState('')
@@ -46,7 +47,7 @@ const SignUp = () => {
 
     setLoading(true)
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_API_BASE_URL}/auth/signup`, {
+      const res = await fetch(`${getEnv('VITE_BACKEND_API_BASE_URL')}/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
