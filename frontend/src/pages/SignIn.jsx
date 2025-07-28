@@ -73,7 +73,7 @@ const SignIn = () => {
 
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)] sm:h-[calc(100vh-9rem)] justify-center px-4 sm:px-6 lg:px-8">
-      <div className="backdrop-blur-lg rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.4)] w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto p-4 sm:p-6 bg-white/20 border border-white/30">
+      <div className="backdrop-blur-lg rounded-xl shadow-[0_4px_15px_rgba(0,0,0,0.4)] w-full max-w-xs sm:max-w-sm md:max-w-[310px] lg:max-w-[340px] mx-auto p-4 sm:p-6 md:p-3 lg:p-4 bg-white/20 border border-white/30">
         {/* Back Button */}
         <button
           onClick={() => navigate('/')}
@@ -86,7 +86,7 @@ const SignIn = () => {
           </svg>
         </button>
 
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-center mb-3 sm:mb-4 mt-8 sm:mt-10 text-indigo-600">
+        <h2 className="text-2xl sm:text-3xl md:text-[1.2rem] lg:text-[1.3rem] font-extrabold text-center mb-3 sm:mb-4 md:mb-2 lg:mb-2 mt-8 sm:mt-10 md:mt-4 lg:mt-5 text-indigo-600">
           Welcome Back
         </h2>
 
@@ -98,7 +98,7 @@ const SignIn = () => {
 
         <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm sm:text-base font-medium text-gray-800 mb-1.5">
+            <label htmlFor="email" className="block text-sm sm:text-base md:text-[0.85rem] lg:text-[0.92rem] font-medium text-gray-800 mb-1">
               Email
             </label>
             <input
@@ -106,7 +106,7 @@ const SignIn = () => {
               type="email"
               required
               placeholder="Enter your email address"
-              className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent text-sm sm:text-base"
+              className="w-full px-4 sm:px-5 md:px-3 lg:px-3 py-2.5 sm:py-3 md:py-2 lg:py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent text-sm sm:text-base md:text-[0.85rem] lg:text-[0.92rem]"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
@@ -114,7 +114,7 @@ const SignIn = () => {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm sm:text-base font-medium text-gray-800 mb-1.5">
+            <label htmlFor="password" className="block text-sm sm:text-base md:text-[0.85rem] lg:text-[0.92rem] font-medium text-gray-800 mb-1">
               Password
             </label>
             <input
@@ -122,7 +122,7 @@ const SignIn = () => {
               type="password"
               required
               placeholder="••••••••"
-              className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent text-sm sm:text-base"
+              className="w-full px-4 sm:px-5 md:px-3 lg:px-3 py-2.5 sm:py-3 md:py-2 lg:py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent text-sm sm:text-base md:text-[0.85rem] lg:text-[0.92rem]"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
@@ -132,12 +132,12 @@ const SignIn = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-2.5 sm:py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed mt-3 sm:mt-4 text-sm sm:text-base"
+            className="w-full bg-indigo-600 text-white py-2.5 sm:py-3 md:py-2 lg:py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed mt-3 sm:mt-4 md:mt-2 lg:mt-2 text-sm sm:text-base md:text-[0.85rem] lg:text-[0.92rem]"
           >
             {loading ? 'Signing In...' : 'Sign In'}
           </button>
 
-          <p className="text-center text-sm sm:text-base text-gray-800 pt-2">
+          <p className="text-center text-sm sm:text-base md:text-[0.85rem] lg:text-[0.92rem] text-gray-800 pt-2">
             Don't have an account?{' '}
             <Link
               to="/signup"
