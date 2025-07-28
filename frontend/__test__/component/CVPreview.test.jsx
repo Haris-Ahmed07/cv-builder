@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import CVPreview from '../../src/components/CVPreview'
-import * as cvStore from '../../src/store/cvStore'
 
 
 // Mock ResizeObserver for Jest environment
