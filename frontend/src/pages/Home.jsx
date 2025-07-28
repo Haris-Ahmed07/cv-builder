@@ -100,7 +100,9 @@ const Home = () => {
   }
 
   return (
-    <div className="w-full sm:h-content md:h-screen flex flex-col overflow-hidden backdrop-blur-lg bg-white/20 border border-white/30 rounded-lg shadow-lg p-4 md:p-2 lg:p-3 md:max-w-[900px] lg:max-w-[1000px] mx-auto">
+    <div className="w-full flex flex-col overflow-hidden backdrop-blur-lg bg-white/20 border border-white/30 rounded-lg shadow-lg px-2 py-4 md:px-4 md:py-6 lg:px-6 lg:py-4 max-w-[1300px] mx-auto min-h-[100dvh]">
+
+
       <BuilderLayout
         form={
           <div className="h-full w-full overflow-y-auto">
@@ -108,28 +110,17 @@ const Home = () => {
           </div>
         }
         preview={
-          <div className="w-full h-full flex flex-col bg-white rounded-lg shadow md:max-w-[540px] lg:max-w-[620px] mx-auto">
+          <div className="w-full h-fit flex flex-col bg-white rounded-lg shadow md:max-w-[540px] lg:max-w-[620px] mx-auto ">
+
             {/* Top bar inside preview container */}
             <div className="p-4 md:p-2 lg:p-3 border-b border-gray-200">
               <h2 className="text-2xl md:text-[1.15rem] lg:text-[1.25rem] font-bold text-gray-800">Live Preview</h2>
             </div>
 
             {/* CV Preview Container with fixed height */}
-            <div className="flex-1 min-h-0 overflow-auto p-4 md:p-2 lg:p-3">
-              <div className="flex justify-center h-full min-h-[200px] sm:max-h-[200px] md:min-h-[400px] lg:min-h-[450px] lg:items-center items-start py-4 md:py-2 lg:py-3">
+            <div className="w-full px-4 py-4 flex justify-center items-start max-h-[430px] sm:max-h-[430px] md:max-h-[550px] lg:max-h-[630px] xl:max-h-[900px] 2xl:max-h-[890px]">
+              <div className="w-full max-w-[720px] scale-95 md:scale-100 lg:scale-[1.05] xl:scale-[1.05] 2xl:scale-[1.05] origin-top max-h-[380px] md:max-h-[500px] lg:max-h-[600px] xl:max-h-[900px] 2xl:max-h-[850px]">
                 <CVPreview isPreview={true} />
-              </div>
-            </div>
-
-            {/* Bottom buttons */}
-            <div className="border-t border-gray-200 bg-gray-50 min-h-[70px] md:min-h-[60px] lg:min-h-[60px]">
-              <div className="h-full grid grid-cols-2 gap-4 p-4 md:p-2 lg:p-3">
-                <div className="h-full">
-                  <SaveButton className="w-full h-full text-2xl md:text-[1.1rem] lg:text-[1.2rem] font-bold rounded-lg flex items-center justify-center p-4 md:p-2 lg:p-3" />
-                </div>
-                <div className="h-full">
-                  <DownloadButton className="w-full h-full text-2xl md:text-[1.1rem] lg:text-[1.2rem] font-bold rounded-lg flex items-center justify-center p-4 md:p-2 lg:p-3" />
-                </div>
               </div>
             </div>
           </div>

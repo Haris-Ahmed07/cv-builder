@@ -4,7 +4,7 @@ import useCVStore from '../store/cvStore';
 import { authHeader } from '../utils/api';
 import { getEnv } from '../utils/env';
 
-const SaveButton = ({ className = '', children = 'Save Resume' }) => {
+const SaveButton = ({ className = '', children = 'Save CV' }) => {
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {

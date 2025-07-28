@@ -14,58 +14,40 @@ import CVSections from './CVSections.jsx'
 const CVPreview = ({ isPreview = true, className }) => {
   const [scale, setScale] = useState(1)
   const containerRef = useRef(null)
-  
-  // Calculate responsive scale based on container size
+
   useEffect(() => {
     const calculateScale = () => {
       if (!containerRef.current) return
-      
-      const container = containerRef.current
-      const containerRect = container.getBoundingClientRect()
-      
-      // Get available space (with some padding for better UX)
-      const availableWidth = containerRect.width - 40 // 20px padding on each side
-      const availableHeight = containerRect.height - 40 // 20px padding on top/bottom
-      
-      // Calculate scale based on both width and height constraints
+
+      const containerRect = containerRef.current.getBoundingClientRect()
+
+      const availableWidth = containerRect.width - 40
+      const availableHeight = containerRect.height - 40
+
       const scaleByWidth = availableWidth / A4_WIDTH
       const scaleByHeight = availableHeight / A4_HEIGHT
-      
-      // Use the smaller scale to ensure CV fits completely
-      const optimalScale = Math.min(scaleByWidth, scaleByHeight, 1) // Max scale of 1
-      
-      // Set minimum scale to prevent CV from becoming too small
+
+      const optimalScale = Math.min(scaleByWidth, scaleByHeight, 1)
       const finalScale = Math.max(optimalScale, 0.3)
-      
+
       setScale(finalScale)
     }
-    
-    // Calculate initial scale
+
     calculateScale()
-    
-    // Recalculate on window resize
-    const handleResize = () => {
-      calculateScale()
-    }
-    
-    window.addEventListener('resize', handleResize)
-    
-    // Use ResizeObserver for more accurate container size changes
+    window.addEventListener('resize', calculateScale)
+
     const resizeObserver = new ResizeObserver(calculateScale)
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current)
-    }
-    
+    resizeObserver.observe(containerRef.current)
+
     return () => {
-      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('resize', calculateScale)
       resizeObserver.disconnect()
     }
   }, [])
 
-  // Common styles for both preview and PDF modes
   const cvStyles = {
     width: `${A4_WIDTH}px`,
-    minHeight: `${A4_HEIGHT}px`, // Changed to minHeight to allow content expansion
+    height: `${A4_HEIGHT}px`,
     fontFamily: CV_FONT_FAMILY,
     fontSize: CV_FONT_SIZE,
     color: CV_TEXT_COLOR,
@@ -73,40 +55,30 @@ const CVPreview = ({ isPreview = true, className }) => {
     padding: CV_PADDING,
     boxSizing: 'border-box',
     backgroundColor: 'white',
-    ...(isPreview && { // Only add border and scroll in preview mode
+    ...(isPreview && {
       border: '1px solid #ddd',
       borderRadius: '4px',
       boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-      maxHeight: `${A4_HEIGHT}px`, // Maintain A4 height constraint
-      overflowY: 'auto', // Add vertical scroll when content exceeds height
-      overflowX: 'hidden' // Hide horizontal scroll
-    }),
-    ...(!isPreview && {
-      overflow: 'visible' // For PDF mode, allow content to flow naturally
+      overflow: 'hidden'
     })
   }
 
   if (isPreview) {
-    // For preview mode, apply responsive scaling
     return (
-      <div 
+      <div
         ref={containerRef}
-        className={`flex justify-center items-center w-full xs:h-content md:h-full min-h-0 ${className || ''}`}
-        style={{ 
-          padding: '20px',
-          overflow: 'hidden'
-        }}
+        className={`flex justify-center items-center w-full h-full ${className || ''}`}
+        style={{ padding: '20px', overflow: 'hidden' }}
       >
         <div
           id="cv-preview"
           style={{
             ...cvStyles,
             transform: `scale(${scale})`,
-            transformOrigin: 'center',
+            transformOrigin: 'top center',
             transition: 'transform 0.2s ease-out',
             flexShrink: 0
           }}
-          className="custom-scrollbar " // Add custom scrollbar styling
         >
           <CVSections />
         </div>
@@ -114,15 +86,14 @@ const CVPreview = ({ isPreview = true, className }) => {
     )
   }
 
-  // For PDF download mode, use original dimensions with PDF scale
   return (
-    <div className={`flex justify-center items-center  ${className || ''}`}>
+    <div className={`flex justify-center items-center ${className || ''}`}>
       <div
         id="cv-preview"
         style={{
           ...cvStyles,
           transform: `scale(${PDF_SCALE})`,
-          transformOrigin: 'center',
+          transformOrigin: 'top center'
         }}
       >
         <CVSections />
