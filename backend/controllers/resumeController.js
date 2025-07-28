@@ -59,15 +59,13 @@ export const saveResume = async (req, res, next) => {
     let resume = await Resume.findOne({ user: req.user.id });
 
     if (resume) {
-      // Merge incoming data with existing resume
+      // Overwrite arrays and objects, do not merge arrays (prevents duplicates)
       Object.keys(req.body).forEach(key => {
         if (Array.isArray(req.body[key]) && Array.isArray(resume[key])) {
-          // If both are arrays, merge them (avoid duplicates)
-          resume[key] = [...resume[key], ...req.body[key]].filter(
-            (item, index, arr) => arr.findIndex(i => JSON.stringify(i) === JSON.stringify(item)) === index
-          );
+          // Overwrite arrays
+          resume[key] = req.body[key];
         } else if (typeof req.body[key] === 'object' && req.body[key] !== null) {
-          // If both are objects, shallow merge
+          // Shallow merge objects
           resume[key] = { ...resume[key], ...req.body[key] };
         } else {
           // Otherwise, just overwrite
