@@ -18,7 +18,7 @@ const AppContent = () => {
       </div>
 
       {/* Main content area */}
-      <main className="flex-1 w-full py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <main className="flex-1 w-full py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center over">
         <div className="w-full max-w-7xl mx-auto ">
           <Routes>
             <Route path="/" element={<LandingPage />} />
