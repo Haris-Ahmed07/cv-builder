@@ -112,10 +112,12 @@ const DownloadButton = ({ className = '' }) => {
         transform hover:scale-[1.02] active:scale-[0.98]
         flex items-center justify-center
         disabled:opacity-70 disabled:cursor-not-allowed
+        px-3 sm:px-4 py-2 sm:py-3
+        text-sm sm:text-base
         ${className}
       `}
     >
-      <span className="whitespace-nowrap">Download CV as PDF</span>
+      <span className="whitespace-nowrap">Download CV</span>
     </button>
   );
 };

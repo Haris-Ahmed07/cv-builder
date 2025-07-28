@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import useCVStore from '../../store/cvStore'
 
 const EducationForm = () => {
@@ -13,9 +13,18 @@ const EducationForm = () => {
     grade: '',
     description: '',
   })
+  const [charCount, setCharCount] = useState(0)
+  const maxChars = 400
+
+  useEffect(() => {
+    setCharCount(form.description.length)
+  }, [form.description])
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    if (name === 'description' && value.length > maxChars) {
+      return
+    }
     setForm((prev) => ({ ...prev, [name]: value }))
   }
 
@@ -41,7 +50,7 @@ const EducationForm = () => {
           name="school"
           value={form.school}
           onChange={handleChange}
-          placeholder="School / University"
+          placeholder="School / University *"
           className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
@@ -49,7 +58,7 @@ const EducationForm = () => {
           name="degree"
           value={form.degree}
           onChange={handleChange}
-          placeholder="Degree"
+          placeholder="Degree *"
           className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
@@ -57,37 +66,50 @@ const EducationForm = () => {
           name="field"
           value={form.field}
           onChange={handleChange}
-          placeholder="Field of Study"
+          placeholder="Field of Study *"
           className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
         />
         <input
           name="grade"
           value={form.grade}
           onChange={handleChange}
-          placeholder="Grade / GPA"
+          placeholder="Grade / GPA *"
           className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
         />
         <input
           name="startDate"
           value={form.startDate}
           onChange={handleChange}
-          placeholder="Start Date"
+          placeholder="Start Date *"
           className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
         />
         <input
           name="endDate"
           value={form.endDate}
           onChange={handleChange}
-          placeholder="End Date"
+          placeholder="End Date *"
           className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
         />
-        <textarea
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Description (optional)"
-          className="border border-gray-300 rounded-lg px-4 py-3 w-full col-span-1 md:col-span-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-        />
+        <div className="relative col-span-1 md:col-span-2">
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            placeholder="Description (optional)"
+            maxLength={maxChars}
+            className={`border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
+            rows={3}
+          />
+          <div className="flex justify-end mt-1">
+            <span className={`text-xs ${charCount === maxChars ? 'text-yellow-600 font-medium' : 'text-gray-500'}`}>
+              {charCount}/{maxChars} characters
+            </span>
+          </div>
+        </div>
         <button
           type="submit"
           className="col-span-1 md:col-span-2 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition-colors font-medium"

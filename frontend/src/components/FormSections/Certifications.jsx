@@ -15,7 +15,7 @@ const Certifications = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!form.name.trim()) return
+    if (!form.name.trim() || !form.issuer.trim() || !form.date) return
     addCertification(form)
     setForm({ name: '', issuer: '', date: '' })
   }
@@ -28,7 +28,7 @@ const Certifications = () => {
           name="name"
           value={form.name}
           onChange={handleChange}
-          placeholder="Certification Name"
+          placeholder="Certification Name *"
           className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
@@ -37,8 +37,9 @@ const Certifications = () => {
           name="issuer"
           value={form.issuer}
           onChange={handleChange}
-          placeholder="Issued By"
+          placeholder="Issued By *"
           className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
         />
         <input
           type="date"
@@ -46,6 +47,7 @@ const Certifications = () => {
           value={form.date}
           onChange={handleChange}
           className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
         />
         <button
           type="submit"

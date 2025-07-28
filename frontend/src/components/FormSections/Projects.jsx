@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import useCVStore from '../../store/cvStore'
 
 const Projects = () => {
@@ -10,16 +10,27 @@ const Projects = () => {
     techStack: '',
     link: '',
   })
+  const [charCount, setCharCount] = useState(0)
+  const maxChars = 300
+
+  useEffect(() => {
+    setCharCount(form.description.length)
+  }, [form.description])
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    if (name === 'description' && value.length > maxChars) {
+      return
+    }
+    setForm({ ...form, [name]: value })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!form.title.trim()) return
+    if (!form.title.trim() || !form.techStack.trim() || !form.description.trim()) return
     addProject(form)
     setForm({ title: '', description: '', techStack: '', link: '' })
+    setCharCount(0)
   }
 
   return (
@@ -39,8 +50,9 @@ const Projects = () => {
           name="techStack"
           value={form.techStack}
           onChange={handleChange}
-          placeholder="Tech Stack (e.g., React, Node.js)"
+          placeholder="Tech Stack (e.g., React, Node.js) *"
           className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
         />
         <input
           type="url"
@@ -54,16 +66,23 @@ const Projects = () => {
           name="description"
           value={form.description}
           onChange={handleChange}
-          placeholder="Project Description"
-          className="border border-gray-300 rounded-lg px-3 py-2 w-full md:col-span-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="Project Description *"
+          className={`border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded-lg px-3 py-2 w-full md:col-span-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
           rows={4}
+          required
+          maxLength={maxChars}
         />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg col-span-1 md:col-span-2 hover:bg-blue-700 transition"
-        >
-          Add Project
-        </button>
+        <div className="col-span-1 md:col-span-2 flex justify-between items-center">
+          <span className={`text-xs ${charCount === maxChars ? 'text-yellow-600 font-medium' : 'text-gray-500'}`}>
+            {charCount}/{maxChars} characters
+          </span>
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Add Project
+          </button>
+        </div>
       </form>
 
       <div className="mt-6">

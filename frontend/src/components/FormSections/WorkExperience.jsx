@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import useCVStore from '../../store/cvStore'
 
 const WorkExperience = () => {
@@ -11,14 +11,24 @@ const WorkExperience = () => {
     endDate: '',
     description: '',
   })
+  const [charCount, setCharCount] = useState(0)
+  const maxChars = 400
+
+  useEffect(() => {
+    setCharCount(form.description.length)
+  }, [form.description])
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    if (name === 'description' && value.length > maxChars) {
+      return
+    }
+    setForm({ ...form, [name]: value })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!form.title.trim() || !form.company.trim()) return
+    if (!form.title.trim() || !form.company.trim() || !form.startDate || !form.endDate || !form.description.trim()) return
     addWorkExperience(form)
     setForm({ title: '', company: '', startDate: '', endDate: '', description: '' })
   }
@@ -49,24 +59,36 @@ const WorkExperience = () => {
           name="startDate"
           value={form.startDate}
           onChange={handleChange}
-          placeholder="Start Date"
+          placeholder="Start Date *"
           className="w-full p-2 border border-gray-300 rounded"
+          required
         />
         <input
           type="month"
           name="endDate"
           value={form.endDate}
           onChange={handleChange}
-          placeholder="End Date"
+          placeholder="End Date *"
           className="w-full p-2 border border-gray-300 rounded"
+          required
         />
-        <textarea
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Description"
-          className="w-full p-2 border border-gray-300 rounded col-span-1 md:col-span-2"
-        />
+        <div className="relative col-span-1 md:col-span-2">
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            placeholder="Description *"
+            required
+            maxLength={maxChars}
+            className={`w-full p-2 border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded col-span-1 md:col-span-2`}
+            rows={3}
+          />
+          <div className="flex justify-end mt-1">
+            <span className={`text-xs ${charCount === maxChars ? 'text-yellow-600 font-medium' : 'text-gray-500'}`}>
+              {charCount}/{maxChars} characters
+            </span>
+          </div>
+        </div>
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded col-span-1 md:col-span-2"

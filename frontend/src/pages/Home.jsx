@@ -100,7 +100,7 @@ const Home = () => {
   }
 
   return (
-    <div className="w-full h-screen flex flex-col overflow-hidden backdrop-blur-lg bg-white/20 border border-white/30 rounded-lg shadow-lg p-4">
+    <div className="w-full sm:h-content md:h-screen flex flex-col overflow-hidden backdrop-blur-lg bg-white/20 border border-white/30 rounded-lg shadow-lg p-4">
       <BuilderLayout
         form={
           <div className="h-full w-full overflow-y-auto">
@@ -116,7 +116,7 @@ const Home = () => {
 
             {/* CV Preview Container with fixed height */}
             <div className="flex-1 min-h-0 overflow-auto p-4">
-              <div className="flex justify-center items-center h-full">
+              <div className="flex justify-center  h-full min-h-[200px] sm:max-h-[200px] md:min-h-[600px] lg:items-center items-start py-4 md:py-0">
                 <CVPreview isPreview={true} />
               </div>
             </div>
