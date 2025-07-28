@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from './AuthContext';
 import useCVStore from '../store/cvStore';
+import { getEnv } from '../utils/env';
 
 const ResumeContext = createContext();
 
@@ -74,7 +75,7 @@ export function ResumeProvider({ children }) {
     const fetchPromise = (async () => {
       try {
         const startTime = Date.now();
-        const apiUrl = `${import.meta.env.VITE_BACKEND_API_BASE_URL}/resume`;
+        const apiUrl = `${getEnv('VITE_BACKEND_API_BASE_URL')}/resume`;
 
         const response = await fetch(apiUrl, {
           headers: {
