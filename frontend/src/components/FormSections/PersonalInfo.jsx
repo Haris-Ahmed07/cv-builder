@@ -24,9 +24,9 @@ const PersonalInfo = () => {
       }
     } else if (name === 'phone' && value) {
       // allow only digits and optional +
-      const digitsOnly = value.replace(/[^\d+]/g, '')
-      if (!/^\+?[0-9]{12}$/.test(digitsOnly)) {
-        error = 'Please enter a 12-digit phone number with country code (e.g., +123456789012)'
+      const digitsOnly = value.replace(/[^0-9]/g, '')
+      if (!/^\+?[0-9]{11,13}$/.test(value) || digitsOnly.length < 11 || digitsOnly.length > 13) {
+        error = 'Phone number must be 11, 12, or 13 digits (with country code, e.g., +12345678901)'
       }
     }
 
@@ -53,7 +53,7 @@ const PersonalInfo = () => {
         value = '+' + value.slice(1).replace(/[^0-9]/g, '')
       }
       const digitsOnly = value.replace(/[^0-9]/g, '')
-      if (digitsOnly.length > 12) {
+      if (digitsOnly.length > 13) {
         value = value.slice(0, -1)
       }
     }
