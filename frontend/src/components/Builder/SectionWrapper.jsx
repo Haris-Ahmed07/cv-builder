@@ -37,26 +37,32 @@ const SectionWrapper = ({ id, children, completed }) => {
     Languages: 'Languages'
   }
 
+  // Add touch-action to prevent scrolling when dragging
+  const touchAction = 'none';
+
   return (
     <div
       ref={setNodeRef}
-      style={style}
-      className="relative border border-gray-200 rounded-lg p-1 sm:p-2 bg-white shadow mb-2 touch-none"
+      style={{ ...style, touchAction }}
+      className="relative border border-gray-200 rounded-lg p-1 sm:p-2 bg-white shadow mb-2"
     >
       {/* Section header with title and controls */}
       <div className="flex items-center text-xs sm:text-sm">
-        {/* Enhanced drag handle for touch devices */}
-        <button
-          className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing p-2 -ml-2"
+        {/* Drag handle */}
+        <div 
+          className="select-none touch-manipulation"
           {...attributes}
           {...listeners}
-          onClick={e => e.stopPropagation()}
-          onTouchStart={e => e.stopPropagation()}
-          tabIndex={-1}
-          aria-label="Drag section"
         >
-          <GripVertical size={18} className="touch-none" />
-        </button>
+          <button
+            className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing p-2 -ml-2"
+            onClick={e => e.stopPropagation()}
+            tabIndex={-1}
+            aria-label="Drag section"
+          >
+            <GripVertical size={18} />
+          </button>
+        </div>
         {/* Clickable area for title and chevron, full width */}
         <div
           className="flex justify-between items-center w-full cursor-pointer select-none"

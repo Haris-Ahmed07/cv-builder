@@ -16,10 +16,16 @@ import SectionWrapper from './SectionWrapper' // Wrapper component for each CV s
 import sectionMap from './sectionMap' // Mapping from section id to section component
 
 const BuilderForm = ({ className = '' }) => {
-  // Setup drag sensor with activation constraint (drag starts after moving 8px)
+  // Setup drag sensor with touch support
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: { distance: 8 }
+      activationConstraint: {
+        distance: 5, // Slightly reduced activation distance
+        tolerance: 5, // Add some tolerance for touch devices
+        delay: 150, // Short delay to allow for scrolling
+      },
+      // Enable touch events
+      enableHold: true,
     })
   )
 
