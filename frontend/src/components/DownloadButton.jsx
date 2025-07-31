@@ -68,8 +68,6 @@ const DownloadButton = ({ className = '' }) => {
         },
       })
 
-      console.log('Canvas size:', canvas.width, 'x', canvas.height)
-
       // revert all styles back to how they were
       cv.style.overflow = originalStyles.overflow
       cv.style.transform = originalStyles.transform
