@@ -4,6 +4,10 @@ import jsPDF from 'jspdf'
 import { A4_WIDTH, A4_HEIGHT, PDF_PADDING, PDF_CONTENT_WIDTH } from '../constants/cvDimensions'
 
 const DownloadButton = ({ className = '' }) => {
+  // Download icon SVG
+  const DownloadIcon = (
+    <svg className="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v12m0 0l4-4m-4 4l-4-4m8 8H8a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2z"/></svg>
+  );
   const handleDownload = async () => {
     const cv = document.getElementById('cv-preview')
     if (!cv) return
@@ -102,20 +106,10 @@ const DownloadButton = ({ className = '' }) => {
   return (
     <button
       onClick={handleDownload}
-      className={`
-        bg-indigo-600 hover:bg-indigo-700 
-        text-white font-semibold 
-        rounded-lg w-full h-full 
-        transition-all duration-200 
-        transform hover:scale-[1.02] active:scale-[0.98]
-        flex items-center justify-center
-        disabled:opacity-70 disabled:cursor-not-allowed
-        px-3 sm:px-4 py-2 sm:py-3
-        text-sm sm:text-base
-        ${className}
-      `}
+      className={`bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 focus:ring-2 focus:ring-blue-300/60 shadow-xl text-white font-bold rounded-2xl w-full h-full transition-all duration-200 transform hover:scale-[1.04] active:scale-95 flex items-center justify-center gap-2 px-6 py-3 text-base disabled:opacity-60 disabled:cursor-not-allowed glassy-button ${className}`}
     >
-      <span className="whitespace-nowrap">Download CV</span>
+      {DownloadIcon}
+      <span className="whitespace-nowrap text-base font-semibold">Download CV</span>
     </button>
   )
 }

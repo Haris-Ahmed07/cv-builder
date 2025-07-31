@@ -54,9 +54,6 @@ const Header = () => {
                       </span>
                     </div>
                     {/* first name */}
-                    <span className="ml-2 text-xl font-bold text-gray-700 whitespace-nowrap">
-                      {(user.name && user.name.split(' ')[0]) || 'User'}
-                    </span>
                   </button>
 
                   {/* dropdown logout button */}
@@ -69,16 +66,32 @@ const Header = () => {
                       ></div>
 
                       {/* actual dropdown */}
-                      <div className="absolute right-0 mt-4 mr-12 w-40 bg-white rounded-lg shadow-lg border border-gray-200 z-50 p-2 flex flex-col items-stretch">
-                        <div className="h-2"></div>
+                      <div className="absolute right-0 mt-4 mr-12 min-w-[260px] max-w-xs bg-white/90 rounded-2xl shadow-2xl border border-gray-100 z-50 p-6 flex flex-col items-center gap-3 transition-all duration-200">
+                        {/* Avatar with ring */}
+                        <div className="relative mb-2">
+                          <div className="h-16 w-16 rounded-full bg-gradient-to-br from-indigo-200 via-indigo-100 to-indigo-50 flex items-center justify-center shadow ring-4 ring-indigo-300">
+                            <span className="text-indigo-700 font-bold text-3xl">
+                              {(user.name && user.name[0].toUpperCase()) || 'U'}
+                            </span>
+                          </div>
+                        </div>
+                        {/* Name and email */}
+                        <div className="text-lg font-bold text-gray-800 text-center w-full truncate">{user.name}</div>
+                        <div className="text-xs text-gray-500 text-center w-full truncate mb-1">{user.email}</div>
+                        <div className="w-full border-t border-gray-200 my-2"></div>
+                        {/* Logout button */}
                         <button
                           onClick={() => {
                             logout()
                             setIsProfileOpen(false)
                           }}
-                          className="block w-full text-left px-3 py-2 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-md transition-colors shadow"
+                          className="flex items-center justify-center gap-2 w-full px-4 py-2 text-base font-semibold text-white bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 focus:ring-2 focus:ring-red-300 rounded-xl shadow-lg transition-all duration-150"
                         >
-                          Sign out
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H9m0 0l3-3m-3 3l3 3" />
+                          </svg>
+                          <span>Sign out</span>
                         </button>
                       </div>
                     </>
