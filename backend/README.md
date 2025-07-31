@@ -100,7 +100,7 @@ backend/
 ### utils/
 - **errorResponse.js**: Custom error class for consistent error responses with HTTP status codes.
 
-### __test__/
+### \_\_test\_\_/
 - **api/**: Integration tests for API endpoints using supertest and mocked dependencies. Covers signup, signin, resume CRUD, and auth-protected routes.
 - **controller/**: Unit tests for controller logic, mocking models and Express request/response objects.
 
