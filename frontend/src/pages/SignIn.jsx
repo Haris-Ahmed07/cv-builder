@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { getEnv } from '../utils/env'
+import { toast } from 'react-toastify'
 
 const SignIn = () => {
   // Form state for user input
@@ -61,6 +62,17 @@ const SignIn = () => {
           login({
             token: data.token,
             user: data.user
+          })
+          // Show welcome toast before redirect
+          toast.success(`Welcome, ${data.user?.name || 'User'}!`, {
+            position: 'bottom-center',
+            autoClose: 3500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
           })
           // Redirect user
           navigate(from, { replace: true })

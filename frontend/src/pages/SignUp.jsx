@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { getEnv } from '../utils/env'
+import { toast } from 'react-toastify'
 
 const SignUp = () => {
   // Form state for all input fields
@@ -79,6 +80,16 @@ const SignUp = () => {
             email: data.user.email
           }
         })
+        toast.success(`Account created! Welcome, ${data.user?.name || 'User'}!`, {
+          position: 'bottom-center',
+          autoClose: 3500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        })
         navigate('/')
       }
       // Handle known error cases
@@ -140,7 +151,15 @@ const SignUp = () => {
               placeholder="Enter your full name"
               className="w-full px-4 sm:px-5 md:px-3 lg:px-3 py-2.5 sm:py-3 md:py-2 lg:py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-transparent text-sm sm:text-base md:text-[0.85rem] lg:text-[0.92rem]"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setName(value);
+                if (value.trim() !== '' && !validateName(value.trim())) {
+                  setError('Name can only contain letters and spaces');
+                } else {
+                  setError('');
+                }
+              }}
               disabled={loading}
             />
           </div>

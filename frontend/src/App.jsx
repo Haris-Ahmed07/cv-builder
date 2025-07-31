@@ -1,5 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './contexts/AuthContext';
 import { ResumeProvider } from './contexts/ResumeContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -55,6 +57,7 @@ const App = () => {
   return (
     <AuthProvider>
       <ResumeProvider>
+        <ToastContainer position="bottom-center" autoClose={3500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored" />
         <AppContent />
       </ResumeProvider>
     </AuthProvider>
