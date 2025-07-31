@@ -11,6 +11,7 @@ import SignIn from './pages/SignIn';
 import LandingPage from './pages/LandingPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import MobileBottomNav from './components/MobileBottomNav';
 
 // Handles the layout and routes of the app
 const AppContent = () => {
@@ -48,6 +49,9 @@ const AppContent = () => {
 
       {/* Footer stays at the bottom */}
       <Footer />
+      
+      {/* Mobile bottom navigation */}
+      <MobileBottomNav />
     </div>
   );
 };

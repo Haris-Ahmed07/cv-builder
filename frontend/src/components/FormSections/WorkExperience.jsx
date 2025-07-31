@@ -56,7 +56,7 @@ const WorkExperience = () => {
           value={form.title}
           onChange={handleChange}
           placeholder="Job Title"
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full p-1.5 text-xs border border-gray-300 rounded"
           required
         />
         <input
@@ -65,7 +65,7 @@ const WorkExperience = () => {
           value={form.company}
           onChange={handleChange}
           placeholder="Company"
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full p-1.5 text-xs border border-gray-300 rounded"
           required
         />
         <input
@@ -74,7 +74,7 @@ const WorkExperience = () => {
           value={form.startDate}
           onChange={handleChange}
           placeholder="Start Date *"
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full p-1.5 text-xs border border-gray-300 rounded"
           required
         />
         <input
@@ -83,7 +83,7 @@ const WorkExperience = () => {
           value={form.endDate}
           onChange={handleChange}
           placeholder="End Date *"
-          className="w-full p-2 border border-gray-300 rounded"
+          className="w-full p-1.5 text-xs border border-gray-300 rounded"
           required
         />
 
@@ -96,7 +96,7 @@ const WorkExperience = () => {
             placeholder="Description *"
             required
             maxLength={maxChars}
-            className={`w-full p-2 border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded`}
+            className={`w-full p-1.5 text-xs border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded`}
             rows={3}
           />
           <div className="flex justify-end mt-1">

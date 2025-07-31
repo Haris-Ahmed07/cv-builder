@@ -60,7 +60,7 @@ const EducationForm = () => {
           value={form.school}
           onChange={handleChange}
           placeholder="School / University *"
-          className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
         {/* Degree Name */}
@@ -69,7 +69,7 @@ const EducationForm = () => {
           value={form.degree}
           onChange={handleChange}
           placeholder="Degree *"
-          className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
         {/* Field of Study */}
@@ -78,7 +78,7 @@ const EducationForm = () => {
           value={form.field}
           onChange={handleChange}
           placeholder="Field of Study *"
-          className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
         {/* GPA / Grade */}
@@ -87,7 +87,7 @@ const EducationForm = () => {
           value={form.grade}
           onChange={handleChange}
           placeholder="Grade / GPA *"
-          className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
         {/* Start Date */}
@@ -96,7 +96,7 @@ const EducationForm = () => {
           value={form.startDate}
           onChange={handleChange}
           placeholder="Start Date *"
-          className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
         {/* End Date */}
@@ -105,7 +105,7 @@ const EducationForm = () => {
           value={form.endDate}
           onChange={handleChange}
           placeholder="End Date *"
-          className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
         {/* Optional Description with char limit */}
@@ -116,7 +116,7 @@ const EducationForm = () => {
             onChange={handleChange}
             placeholder="Description (optional)"
             maxLength={maxChars}
-            className={`border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
+            className={`border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded-lg px-3 py-2 text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
             rows={3}
           />
           <div className="flex justify-end mt-1">

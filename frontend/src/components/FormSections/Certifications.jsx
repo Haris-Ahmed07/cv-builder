@@ -29,14 +29,14 @@ const Certifications = () => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md mb-6">
       {/* Certification input form */}
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-3">
         <input
           type="text"
           name="name"
           value={form.name}
           onChange={handleChange}
           placeholder="Certification Name *"
-          className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
         <input
@@ -45,7 +45,7 @@ const Certifications = () => {
           value={form.issuer}
           onChange={handleChange}
           placeholder="Issued By *"
-          className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
         <input
@@ -53,12 +53,12 @@ const Certifications = () => {
           name="date"
           value={form.date}
           onChange={handleChange}
-          className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="border border-gray-300 rounded-lg px-3 py-2 text-xs w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         />
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg col-span-2 transition-colors font-medium"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg transition-colors font-medium text-sm"
         >
           Add Certification
         </button>

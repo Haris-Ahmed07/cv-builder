@@ -41,20 +41,21 @@ const SectionWrapper = ({ id, children, completed }) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="relative border border-gray-200 rounded-lg p-1 sm:p-2 bg-white shadow mb-2"
+      className="relative border border-gray-200 rounded-lg p-1 sm:p-2 bg-white shadow mb-2 touch-none"
     >
       {/* Section header with title and controls */}
       <div className="flex items-center text-xs sm:text-sm">
-        {/* Drag handle */}
+        {/* Enhanced drag handle for touch devices */}
         <button
-          className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing mr-1"
+          className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing p-2 -ml-2"
           {...attributes}
           {...listeners}
           onClick={e => e.stopPropagation()}
+          onTouchStart={e => e.stopPropagation()}
           tabIndex={-1}
           aria-label="Drag section"
         >
-          <GripVertical size={14} />
+          <GripVertical size={18} className="touch-none" />
         </button>
         {/* Clickable area for title and chevron, full width */}
         <div

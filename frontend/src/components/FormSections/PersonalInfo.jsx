@@ -81,7 +81,7 @@ const PersonalInfo = () => {
               onChange={handleChange}
               onBlur={(e) => validateField(name, e.target.value)}
               placeholder={placeholder}
-              className={`w-full border ${errors[name] ? 'border-red-500' : 'border-gray-300'} p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+              className={`w-full border ${errors[name] ? 'border-red-500' : 'border-gray-300'} p-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
             />
             {/* show validation message below input if error exists */}
             {errors[name] && (
