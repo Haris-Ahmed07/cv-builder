@@ -119,7 +119,7 @@ const Home = () => {
 
             {/* Header inside the preview box */}
             <div className="p-4 md:p-2 lg:p-3 border-b border-gray-200">
-              <h2 className="text-2xl md:text-[1.15rem] lg:text-[1.25rem] font-bold text-gray-800">Live Preview</h2>
+              <h2 className="text-xs sm:text-sm md:text-sm font-bold text-gray-800 mb-1">Live Preview</h2>
             </div>
 
             {/* CV preview itself, scaled for responsiveness */}

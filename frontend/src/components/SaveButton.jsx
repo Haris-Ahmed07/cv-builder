@@ -44,7 +44,7 @@ const SaveButton = ({ className = '', children = 'Save CV' }) => {
 
       // Success
       await response.json();
-      toast.success('Resume saved successfully!');
+      toast.success('CV saved successfully!');
     } catch (error) {
       // Handle and show any error to the user
       toast.error(error.message || 'Failed to save CV. Please try again.');

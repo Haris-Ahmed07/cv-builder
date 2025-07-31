@@ -31,7 +31,7 @@ const Summary = () => {
           placeholder="Write a short summary about yourself..."
           rows={5}
           maxLength={maxChars}
-          className={`w-full border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
+          className={`w-full border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none`}
         />
         
         {/* character counter display */}

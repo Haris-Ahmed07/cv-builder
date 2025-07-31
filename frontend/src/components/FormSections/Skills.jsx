@@ -24,7 +24,7 @@ const Skills = () => {
           value={skillInput}
           onChange={(e) => setSkillInput(e.target.value)}
           placeholder="Enter a skill"
-          className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="flex-1 border border-gray-300 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           aria-label="Skill input"
           maxLength={30}
           required

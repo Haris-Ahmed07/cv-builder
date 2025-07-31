@@ -75,7 +75,7 @@ describe('SaveButton', () => {
           body: JSON.stringify(mockState)
         })
       )
-      expect(toast.success).toHaveBeenCalledWith('Resume saved successfully!')
+      expect(toast.success).toHaveBeenCalledWith('CV saved successfully!')
     })
   })
 

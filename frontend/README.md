@@ -36,6 +36,7 @@ frontend/
 │   │   ├── DownloadButton.jsx # CV download functionality
 │   │   ├── Footer.jsx      # Application footer
 │   │   ├── Header.jsx      # Navigation and user controls
+│   │   ├── MobileBottomNav.jsx # Mobile navigation with action buttons
 │   │   └── ProtectedRoute.jsx # Route protection
 │   ├── constants/          # Application constants
 │   ├── contexts/           # React contexts
@@ -118,6 +119,7 @@ frontend/
 - **CVSections.jsx**: Manages the different sections of the CV.
 - **DownloadButton.jsx**: Handles CV download functionality.
 - **Header.jsx**: Navigation bar with user controls and auth status.
+- **MobileBottomNav.jsx**: Responsive bottom navigation bar for mobile devices, containing Save and Download actions.
 - **ProtectedRoute.jsx**: HOC for protecting routes that require authentication.
 
 ### src/contexts/

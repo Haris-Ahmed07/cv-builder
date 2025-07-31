@@ -41,7 +41,7 @@ const Achievements = () => {
           value={input}
           onChange={handleChange}
           placeholder="Add an achievement *"
-          className={`border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} p-3 rounded-lg col-span-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+          className={`border ${charCount === maxChars ? 'border-yellow-400' : 'border-gray-300'} p-2 text-xs rounded-lg col-span-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
           maxLength={maxChars}
           required
         />
