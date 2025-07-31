@@ -23,9 +23,9 @@ describe('SectionWrapper', () => {
     // Child should not be visible initially
     expect(screen.queryByTestId('child')).not.toBeInTheDocument()
 
-    // Click second button (Chevron)
-    const buttons = screen.getAllByRole('button')
-    fireEvent.click(buttons[1])
+    // Click the section header (chevron/title area) to expand
+    const headerDiv = screen.getByText('Summary').closest('div.cursor-pointer')
+    fireEvent.click(headerDiv)
 
     // Child should now be visible
     expect(screen.getByTestId('child')).toBeInTheDocument()
