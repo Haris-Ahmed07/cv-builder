@@ -41,20 +41,20 @@ const SectionWrapper = ({ id, children, completed }) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="relative border border-gray-200 rounded-xl p-4 bg-white shadow mb-4"
+      className="relative border border-gray-200 rounded-lg p-1 sm:p-2 bg-white shadow mb-2"
     >
       {/* Section header with title and controls */}
-      <div className="flex items-center">
+      <div className="flex items-center text-xs sm:text-sm">
         {/* Drag handle */}
         <button
-          className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing mr-2"
+          className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing mr-1"
           {...attributes}
           {...listeners}
           onClick={e => e.stopPropagation()}
           tabIndex={-1}
           aria-label="Drag section"
         >
-          <GripVertical size={18} />
+          <GripVertical size={14} />
         </button>
         {/* Clickable area for title and chevron, full width */}
         <div
@@ -62,7 +62,7 @@ const SectionWrapper = ({ id, children, completed }) => {
           onClick={() => setIsOpen(!isOpen)}
         >
           <div className="flex items-center gap-2">
-              <h3 className="text-lg font-semibold text-gray-800">
+              <h3 className="font-semibold flex-1 select-none text-[10px] sm:text-xs">
                 {sectionTitles[id] || id}
               </h3>
               {completed ? (

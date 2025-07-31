@@ -52,12 +52,12 @@ const BuilderForm = ({ className = '' }) => {
 
   return (
     <div
-      className={`w-full h-full p-4 overflow-y-auto 
+      className={`w-full h-full p-2 sm:p-3 md:p-4 overflow-y-auto text-xs
         bg-white/20 backdrop-blur-lg border border-white/30 rounded-xl shadow-lg
         ${className}`}
     >
-      <div className="p-4">
-        <h2 className="text-2xl font-bold text-gray-800">Build Your CV</h2>
+      <div className="p-2 sm:p-3">
+        <h2 className="text-xs sm:text-sm md:text-sm font-bold text-gray-800 mb-1">Build Your CV</h2>
       </div>
 
       {/* Setup DnD context and sortable context */}
