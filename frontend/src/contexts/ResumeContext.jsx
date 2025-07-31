@@ -159,8 +159,6 @@ export function ResumeProvider({ children }) {
   const updateCVStoreWithResumeData = useCallback((resumeData) => {
     if (!resumeData) return;
 
-    console.log('Updating CV store with resume data:', resumeData);
-
     const { updateCVStore } = useCVStore.getState();
 
     // Normalize missing arrays to empty arrays to avoid frontend crashes

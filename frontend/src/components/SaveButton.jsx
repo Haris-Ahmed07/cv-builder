@@ -59,16 +59,7 @@ const SaveButton = ({ className = '', children = 'Save CV' }) => {
       onClick={handleSave}
       disabled={isSaving}
       className={`
-        bg-indigo-600 hover:bg-indigo-700 
-        text-white font-semibold 
-        rounded-lg w-full h-full 
-        transition-all duration-200 
-        transform hover:scale-[1.02] active:scale-[0.98]
-        flex items-center justify-center
-        disabled:opacity-70 disabled:cursor-not-allowed
-        px-3 sm:px-4 py-2 sm:py-3
-        text-sm sm:text-base
-        ${className}
+        bg-gradient-to-r from-green-400 via-green-500 to-emerald-500 hover:from-green-500 hover:to-emerald-600 focus:ring-2 focus:ring-green-300/60 shadow-xl text-white font-bold rounded-2xl w-full h-full transition-all duration-200 transform hover:scale-[1.04] active:scale-95 flex items-center justify-center gap-2 px-6 py-3 text-base disabled:opacity-60 disabled:cursor-not-allowed glassy-button ${className}
       `}
     >
       {isSaving ? (

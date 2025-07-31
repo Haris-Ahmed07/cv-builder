@@ -24,7 +24,19 @@ const BuilderForm = ({ className = '' }) => {
   )
 
   // Get section order and setter from store
-  const { sectionOrder, setSectionOrder } = useCVStore()
+  const {
+    sectionOrder,
+    setSectionOrder,
+    personalInfo,
+    summary,
+    education,
+    workExperience,
+    skills,
+    achievements,
+    projects,
+    certifications,
+    languages
+  } = useCVStore();
 
   // Handle drag end event and reorder the sectionOrder array
   const handleDragEnd = (event) => {
@@ -40,12 +52,12 @@ const BuilderForm = ({ className = '' }) => {
 
   return (
     <div
-      className={`w-full h-full p-4 overflow-y-auto 
+      className={`w-full h-full p-2 sm:p-3 md:p-4 overflow-y-auto text-xs
         bg-white/20 backdrop-blur-lg border border-white/30 rounded-xl shadow-lg
         ${className}`}
     >
-      <div className="p-4">
-        <h2 className="text-2xl font-bold text-gray-800">Build Your CV</h2>
+      <div className="p-2 sm:p-3">
+        <h2 className="text-xs sm:text-sm md:text-sm font-bold text-gray-800 mb-1">Build Your CV</h2>
       </div>
 
       {/* Setup DnD context and sortable context */}
@@ -54,8 +66,68 @@ const BuilderForm = ({ className = '' }) => {
           {/* Render each section inside a wrapper, enabling drag handle and drop area */}
           {sectionOrder.map((id) => {
             const SectionComponent = sectionMap[id]
+
+            // Completion logic for each section
+            let completed = false;
+            switch (id) {
+              case 'PersonalInfo':
+                completed = [personalInfo.name, personalInfo.email, personalInfo.address, personalInfo.linkedin, personalInfo.github]
+                  .every(v => v && v.trim() !== '');
+                break;
+              case 'Summary':
+                completed = !!summary && summary.trim() !== '';
+                break;
+              case 'Education':
+                completed = Array.isArray(education) &&
+                  education.length > 0 &&
+                  education.every(e => e.school && e.school.trim() !== '' && e.degree && e.degree.trim() !== '');
+                break;
+              case 'Work':
+                completed = Array.isArray(workExperience) &&
+                  workExperience.length > 0 &&
+                  workExperience.every(e =>
+                    e.title && e.title.trim() !== '' &&
+                    e.company && e.company.trim() !== '' &&
+                    e.startDate && e.startDate.trim() !== '' &&
+                    e.endDate && e.endDate.trim() !== '' &&
+                    e.description && e.description.trim() !== ''
+                  );
+                break;
+              case 'Skills':
+                completed = Array.isArray(skills) &&
+                  skills.length > 0 &&
+                  skills.every(s => (typeof s === 'string' ? s.trim() !== '' : s.name && s.name.trim() !== ''));
+                break;
+              case 'Achievements':
+                completed = Array.isArray(achievements) &&
+                  achievements.length > 0 &&
+                  achievements.every(a => (typeof a === 'string' ? a.trim() !== '' : a.title && a.title.trim() !== ''));
+                break;
+              case 'Projects':
+                completed = Array.isArray(projects) &&
+                  projects.length > 0 &&
+                  projects.every(p => p.title && p.title.trim() !== '' && p.description && p.description.trim() !== '');
+                break;
+              case 'Certifications':
+                completed = Array.isArray(certifications) &&
+                  certifications.length > 0 &&
+                  certifications.every(c =>
+                    c.name && c.name.trim() !== '' &&
+                    c.issuer && c.issuer.trim() !== '' &&
+                    c.date && c.date.trim() !== ''
+                  );
+                break;
+              case 'Languages':
+                completed = Array.isArray(languages) &&
+                  languages.length > 0 &&
+                  languages.every(l => typeof l === 'string' && l.trim() !== '');
+                break;
+              default:
+                completed = false;
+            }
+
             return (
-              <SectionWrapper key={id} id={id}>
+              <SectionWrapper key={id} id={id} completed={completed}>
                 <div className="mb-6">{SectionComponent && <SectionComponent />}</div>
               </SectionWrapper>
             )

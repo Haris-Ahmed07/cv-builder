@@ -4,7 +4,9 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
 // Wrapper for each resume section with drag-and-drop and toggle visibility
-const SectionWrapper = ({ id, children }) => {
+import { CheckCircle, AlertCircle } from 'lucide-react'
+
+const SectionWrapper = ({ id, children, completed }) => {
   const [isOpen, setIsOpen] = useState(false) // Tracks if section is expanded
 
   // Setup sortable behavior for drag-and-drop
@@ -39,32 +41,40 @@ const SectionWrapper = ({ id, children }) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="relative border border-gray-200 rounded-xl p-4 bg-white shadow mb-4"
+      className="relative border border-gray-200 rounded-lg p-1 sm:p-2 bg-white shadow mb-2"
     >
       {/* Section header with title and controls */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          {/* Drag handle */}
-          <button
-            className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing"
-            {...attributes}
-            {...listeners}
-          >
-            <GripVertical size={18} />
-          </button>
-          {/* Section title */}
-          <h3 className="text-lg font-semibold text-gray-800">
-            {sectionTitles[id] || id}
-          </h3>
-        </div>
-
-        {/* Toggle collapse/expand */}
+      <div className="flex items-center text-xs sm:text-sm">
+        {/* Drag handle */}
         <button
-          className="text-gray-500 hover:text-gray-700"
+          className="text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing mr-1"
+          {...attributes}
+          {...listeners}
+          onClick={e => e.stopPropagation()}
+          tabIndex={-1}
+          aria-label="Drag section"
+        >
+          <GripVertical size={14} />
+        </button>
+        {/* Clickable area for title and chevron, full width */}
+        <div
+          className="flex justify-between items-center w-full cursor-pointer select-none"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-        </button>
+          <div className="flex items-center gap-2">
+              <h3 className="font-semibold flex-1 select-none text-[10px] sm:text-xs">
+                {sectionTitles[id] || id}
+              </h3>
+              {completed ? (
+                <CheckCircle size={20} className="text-green-500" title="Completed" />
+              ) : (
+                <AlertCircle size={20} className="text-orange-400" title="Incomplete" />
+              )}
+            </div>
+            <span>
+              {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            </span>
+        </div>
       </div>
 
       {/* Show section content if expanded */}

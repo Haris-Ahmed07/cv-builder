@@ -22,10 +22,11 @@ describe('Header Component', () => {
     expect(screen.getByText('Sign Up')).toBeInTheDocument()
   })
 
-  it('shows user name and hides Sign In/Up when logged in', () => {
+  it('shows user initial and hides Sign In/Up when logged in', () => {
     renderWithAuth({ name: 'Haris' })
 
-    expect(screen.getByText('Haris')).toBeInTheDocument()
+    // Only initial should be visible
+    expect(screen.getByText('H')).toBeInTheDocument()
     expect(screen.queryByText('Sign In')).not.toBeInTheDocument()
     expect(screen.queryByText('Sign Up')).not.toBeInTheDocument()
   })
@@ -33,7 +34,8 @@ describe('Header Component', () => {
   it('shows and hides profile dropdown', () => {
     renderWithAuth({ name: 'Haris' })
 
-    const profileBtn = screen.getByText('Haris').closest('button')
+    // Click the avatar/profile button (find by initial)
+    const profileBtn = screen.getByText('H').closest('button')
     fireEvent.click(profileBtn)
     expect(screen.getByText('Sign out')).toBeInTheDocument()
 
@@ -48,7 +50,8 @@ describe('Header Component', () => {
     const mockLogout = jest.fn()
     renderWithAuth({ name: 'Haris' }, mockLogout)
 
-    const profileBtn = screen.getByText('Haris').closest('button')
+    // Click the avatar/profile button (find by initial)
+    const profileBtn = screen.getByText('H').closest('button')
     fireEvent.click(profileBtn)
 
     fireEvent.click(screen.getByText('Sign out'))

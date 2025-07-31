@@ -15,49 +15,48 @@ const Landing = () => {
 
   // If already authenticated, don’t show the landing page at all
   if (isAuthenticated) return null;
-
+  
   return (
     // Background and outer container
     <div className="bg-[url('/bg-pattern.png')] bg-cover bg-no-repeat bg-center flex flex-col min-h-content ">
 
       {/* Main section */}
-      <main className="flex-1 flex flex-col justify-start items-center text-center px-4 py-6 sm:py-8 lg:py-12">
-        <div className="backdrop-blur-xl bg-white/30 border border-white/20 shadow-2xl rounded-3xl p-6 sm:p-8 lg:p-10 w-full max-w-4xl">
+      <main className="flex-1 flex flex-col justify-start items-center text-center px-2 py-3 sm:py-4 md:py-6 lg:py-8">
+        <div className="backdrop-blur-xl bg-white/30 border border-white/20 shadow-2xl rounded-2xl p-4 sm:p-6 md:p-7 lg:p-8 w-full max-w-screen-lg">
 
           {/* Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-gray-900 mb-3 sm:mb-4 leading-tight">
             Create Professional CVs
-            <span className="text-indigo-600 block">Effortlessly</span>
+            <span className="text-indigo-600 block text-xl sm:text-2xl md:text-3xl lg:text-3xl">Effortlessly</span>
           </h1>
 
           {/* Subheading */}
-          <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
-            Build modern, clean, and ATS-friendly resumes in minutes. No design skills needed.
-            Live preview and instant PDF download.
+          <p className="text-sm sm:text-base md:text-lg text-gray-700 max-w-xl mx-auto mb-4 sm:mb-5 leading-relaxed">
+            Build modern, clean, and ATS-friendly resumes in minutes. No design skills needed. Live preview and instant PDF download.
           </p>
 
           {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-center mb-6 sm:mb-8">
             <Link
               to="/signup"
-              className="bg-indigo-600 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg text-base sm:text-lg font-semibold hover:bg-indigo-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
+              className="bg-indigo-600 text-white px-4 py-2 sm:px-6 sm:py-2.5 rounded-md text-sm sm:text-base font-semibold hover:bg-indigo-700 transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
             >
               Get Started Free
             </Link>
             <Link
               to="/signin"
-              className="text-indigo-600 font-semibold text-base sm:text-lg hover:text-indigo-800 transition-colors border-2 border-indigo-600 px-6 py-3 sm:px-8 sm:py-4 rounded-lg hover:bg-indigo-50 w-full sm:w-auto"
+              className="text-indigo-600 font-semibold text-sm sm:text-base hover:text-indigo-800 transition-colors border-2 border-indigo-600 px-4 py-2 sm:px-6 sm:py-2.5 rounded-md hover:bg-indigo-50 w-full sm:w-auto"
             >
               Sign In
             </Link>
           </div>
 
           {/* Feature cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mt-5 sm:mt-6">
 
             {/* Feature 1 */}
             <div className="text-center">
-              <div className="bg-indigo-100 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+              <div className="bg-indigo-100 w-9 h-9 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>

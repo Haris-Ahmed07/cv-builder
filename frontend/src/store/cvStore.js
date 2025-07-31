@@ -145,7 +145,6 @@ const useCVStore = create((set) => ({
 
   // Updates the entire CV store with new resume data
   updateCVStore: (newData) => {
-    console.log('Updating CV store with new data:', newData);
     return set((state) => {
       const updatedState = {
         personalInfo: newData.personalInfo || state.personalInfo,
@@ -159,7 +158,6 @@ const useCVStore = create((set) => ({
         languages: Array.isArray(newData.languages) ? [...newData.languages] : state.languages,
         sectionOrder: Array.isArray(newData.sectionOrder) ? [...newData.sectionOrder] : state.sectionOrder,
       };
-      console.log('CV store updated with:', updatedState);
       return updatedState;
     });
   },

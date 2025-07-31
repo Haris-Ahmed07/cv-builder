@@ -12,7 +12,7 @@ import {
 import CVSections from './CVSections.jsx'
 
 const CVPreview = ({ isPreview = true, className }) => {
-  const [scale, setScale] = useState(1)
+  const [scale, setScale] = useState(0.8)
   const containerRef = useRef(null)
 
   useEffect(() => {
