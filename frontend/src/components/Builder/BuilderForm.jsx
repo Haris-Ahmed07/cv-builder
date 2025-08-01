@@ -20,12 +20,13 @@ const BuilderForm = ({ className = '' }) => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 5, // Slightly reduced activation distance
-        tolerance: 5, // Add some tolerance for touch devices
-        delay: 150, // Short delay to allow for scrolling
+        // Only activate drag when moving 8px to distinguish from clicks
+        distance: 8,
+        // Add some tolerance for touch devices
+        tolerance: 10,
+        // Short delay to allow for scrolling
+        delay: 100,
       },
-      // Enable touch events
-      enableHold: true,
     })
   )
 
