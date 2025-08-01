@@ -74,7 +74,7 @@ const Projects = () => {
 
         {/* project link (optional) */}
         <input
-          type="url"
+          type="text"
           name="link"
           value={form.link}
           onChange={handleChange}
