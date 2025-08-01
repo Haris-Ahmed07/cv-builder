@@ -1,7 +1,12 @@
 import SaveButton from './SaveButton';
 import DownloadButton from './DownloadButton';
+import { useAuth } from '../contexts/AuthContext';
 
 const MobileBottomNav = () => {
+  const { user } = useAuth();
+  
+  // Don't render anything if user is not logged in
+  if (!user) return null;
   return (
     <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 z-40 shadow-[0_-4px_15px_rgba(0,0,0,0.1)]">
       <div className="max-w-7xl mx-auto px-4 py-3">
