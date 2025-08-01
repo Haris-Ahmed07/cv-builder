@@ -13,7 +13,7 @@ const BuilderLayout = ({ form, preview }) => {
         {/* Divider with shadow */}
         <div className="hidden md:block w-2 h-full bg-transparent shadow-2xl shadow-gray-900/60 rounded-full mx-1"></div>
         {/* Right side: Preview section with scroll enabled */}
-        <div className="flex-1 h-full overflow-auto shadow-2xl shadow-gray-800/40 rounded-xl bg-white/30 border-1 border-gray-300">
+        <div className="flex-1 h-full overflow-hidden shadow-2xl shadow-gray-800/40 rounded-xl bg-white/30 border-1 border-gray-300">
           {preview}
         </div>
       </div>
