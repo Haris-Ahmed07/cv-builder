@@ -39,7 +39,6 @@ frontend/
 │   │   ├── MobileBottomNav.jsx # Mobile navigation with action buttons
 │   │   └── ProtectedRoute.jsx # Route protection
 │   ├── constants/          # Application constants
-│   ├── contexts/           # React contexts
 │   ├── hooks/              # Custom React hooks
 │   ├── pages/              # Page components
 │   ├── store/              # State management
@@ -208,7 +207,7 @@ NODE_ENV=test
 
 ## State Management
 
-- **React Context**: Used for global state (auth, CV data).
+- **Zustand**: Used for global state (auth, CV data).
 - **Local State**: Used for component-specific state.
 - **Custom Hooks**: For reusable stateful logic.
 
