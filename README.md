@@ -16,7 +16,7 @@ CV Builder is a comprehensive resume creation platform that allows users to:
 - **React 18** - Modern UI library
 - **Vite** - Fast build tool and dev server
 - **Tailwind CSS** - Utility-first CSS framework
-- **React Context** - State management
+- **Zustand** - State management
 - **Axios** - HTTP client for API requests
 - **React Testing Library & Jest** - Testing framework
 
@@ -41,7 +41,6 @@ cv-builder/
 │   │   │   ├── CVPreview.jsx   # CV preview component
 │   │   │   ├── Header.jsx      # Navigation component
 │   │   │   └── ProtectedRoute.jsx # Route protection
-│   │   ├── contexts/           # React contexts
 │   │   ├── hooks/              # Custom React hooks
 │   │   ├── pages/              # Page components
 │   │   ├── store/              # State management
@@ -204,7 +203,7 @@ npm test -- --watch
 - **Protected Routes**: Handle authentication
 
 ### State Management
-- **React Context**: Global state for auth and CV data
+- **Zustand** - Lightweight state management
 - **Custom Hooks**: Reusable stateful logic
 - **Local State**: Component-specific state
 
